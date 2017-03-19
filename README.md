@@ -1,11 +1,11 @@
 # canvas study
 ## 三角公式
-   sin = 对边/斜边
-   cos = 邻边/斜边
-   tan = 对边/邻边
+   * sin = 对边/斜边
+   * cos = 邻边/斜边
+   * tan = 对边/邻边
 ## 角度与弧度
-   弧度 = 角度 * Math.PI / 180
-   角度 = 弧度 * 180 ／ Math.PI
+   * 弧度 = 角度 * Math.PI / 180
+   * 角度 = 弧度 * 180 ／ Math.PI
 ## 朝鼠标旋转
     dx = mouse.x - object.x;
     dy = mouse.y - object.y;
