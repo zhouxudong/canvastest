@@ -18,3 +18,16 @@
         yposition = centerY + Math.sin(angle) * radius;
         angle += speed;
     }())
+## 创建圆形
+    (function drawFram(){
+        window.requestAnimationFrame(drawFram, canvas);
+
+        xposition = centerX + Math.cos(angle) * radius;
+        yposition = centerY + Math.sin(angle) * radius;
+        angle += speed;
+    }())
+## 获取两点间距离
+    //points are x1,y1 and x2,y2
+    dx = x2 - x1;
+    dy = y2 - y1;
+    dist = Math.sqrt(dx * dx + dy * dy);
