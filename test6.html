@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>正弦波</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#fff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="500" height="500">浏览器不支持</canvas>
+<script src="statics/js/utils.js"></script>
+<script src="statics/js/ball.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        angle = 0,
+        rangle = 50,
+        centerY = canv.height / 2,
+        xspeed = 1,
+        yspeed = 0.05,
+        xpos = 0,
+        ypos = centerY;
+
+    cxt.lineWidth = 2;
+
+    (function drawFrame(){
+        window.requestAnimationFrame(drawFrame, canv);
+
+        cxt.beginPath();
+        cxt.moveTo(xpos,ypos);
+
+        xpos += xspeed;
+        angle += yspeed;
+        ypos = centerY + Math.sin(angle) * rangle;
+        cxt.lineTo(xpos,ypos);
+        cxt.stroke();
+
+    }())
+
+</script>
+</body>
+</html>
