@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>脉冲运动</title>
+    <title>test cavans 1</title>
     <style>
         body{background-color: #bbbbbb;}
         #mycanvas{
@@ -12,17 +12,14 @@
 </head>
 <body>
 <canvas id="mycanvas" width="500" height="500">浏览器不支持</canvas>
-<script src="statics/js/utils.js"></script>
-<script src="statics/js/ball.js"></script>
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball.js"></script>
 <script>
 
     var canv = document.getElementById("mycanvas"),
         cxt = canv.getContext("2d"),
         ball = new Ball(),
-        angle = 0,
-        centerScale = 1,
-        range = 0.5,
-        speed = 0.05;
+        angle = 0;
 
     ball.x = canv.width / 2;
     ball.y = canv.height / 2;
@@ -30,9 +27,8 @@
         window.requestAnimationFrame(drawFrame, canv);
         cxt.clearRect(0,0,canv.width,canv.height);
 
-        ball.scaleX = ball.scaleY = centerScale + Math.sin(angle) * range;
-        angle += speed;
-
+        ball.y = canv.height / 2 + Math.sin(angle) * 50;
+        angle += 0.1;
         ball.draw(cxt);
 
     }())
