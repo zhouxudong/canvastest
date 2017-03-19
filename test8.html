@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>椭圆运动</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#fff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="500" height="500">浏览器不支持</canvas>
+<script src="statics/js/utils.js"></script>
+<script src="statics/js/ball.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        ball = new Ball(),
+        angle = 0,
+        centerX = canv.width / 2,
+        centerY = canv.height / 2,
+        radiusX = 150,
+        radiusY = 100,
+        speed = 0.05;
+
+    (function drawFrame(){
+        window.requestAnimationFrame(drawFrame, canv);
+        cxt.clearRect(0,0,canv.width,canv.height);
+
+        ball.x = centerX + Math.sin(angle) * radiusX;
+        ball.y = centerY + Math.cos(angle) * radiusY;
+        angle += speed;
+
+        ball.draw(cxt);
+
+    }())
+
+</script>
+</body>
+</html>
