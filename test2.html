@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test cavans 1</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#fff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="500" height="500">浏览器不支持</canvas>
+<script src="statics/js/utils.js"></script>
+<script src="statics/js/ball.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        ball = new Ball(),
+        angle = 0;
+
+    ball.x = canv.width / 2;
+    ball.y = canv.height / 2;
+    (function drawFrame(){
+        window.requestAnimationFrame(drawFrame, canv);
+        cxt.clearRect(0,0,canv.width,canv.height);
+
+        ball.y = canv.height / 2 + Math.sin(angle) * 50;
+        angle += 0.1;
+        ball.draw(cxt);
+
+    }())
+
+</script>
+</body>
+</html>
