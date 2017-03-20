@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>画笔</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#fff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="500" height="500">浏览器不支持</canvas>
+<script src="../statics/js/utils.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv);
+    function onMouseMove() {
+        cxt.lineTo(mouse.x, mouse.y);
+        cxt.stroke();
+    }
+    canv.addEventListener("mousedown", function () {
+        cxt.beginPath();
+        cxt.moveTo(mouse.x, mouse.y);
+        canv.addEventListener("mousemove", onMouseMove, false);
+    },false);
+
+    canv.addEventListener("mouseup", function () {
+        canv.removeEventListener("mousemove", onMouseMove, false);
+    },false);
+
+
+</script>
+</body>
+</html>
