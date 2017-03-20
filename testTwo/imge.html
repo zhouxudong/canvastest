@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图像，视频</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#fff;
+        }
+        .none{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="500" height="500">浏览器不支持</canvas>
+<video id="video1" width="420" autoplay>
+    <source src="../statics/video/mov_bbb.mp4" type="video/mp4" />
+    <source src="../statics/video/mov_bbb.ogg" type="video/ogg" />
+    Your browser does not support HTML5 video.
+</video>
+<img src="../statics/images/835.jpeg" id="img1"/>
+<script src="../statics/js/utils.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        video = document.getElementById("video1"),
+        img = document.images[0];
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+
+        cxt.drawImage(video, 0, 0);
+    }())
+    cxt.drawImage(img, 0, 300);
+
+
+
+
+</script>
+</body>
+</html>
