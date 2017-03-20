@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用quadraticCurveTo绘制曲线</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#fff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="500" height="500">浏览器不支持</canvas>
+<script src="../statics/js/utils.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        x0 = 100,
+        y0 = 200,
+        x2 = 300,
+        y2 = 200;
+    canv.addEventListener("mousedown", function () {
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        var x1 = mouse.x;
+        var y1 = mouse.y;
+        cxt.beginPath();
+        cxt.moveTo(x0, y0);
+        cxt.quadraticCurveTo(x1, y1, x2, y2);
+        cxt.stroke();
+    })
+
+
+</script>
+</body>
+</html>
