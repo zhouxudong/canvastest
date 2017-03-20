@@ -40,9 +40,9 @@
 ## 十进制转换十六进制
     decimaValue.toString(16);
 ## 颜色转换
-    ### 组合三原色
+### 组合三原色
     color = red << 16 | green << 8 | blue;
-    ### 提取三原色
+### 提取三原色
     red = color24 >> 16 & 0xff;
     green = color24 >> 8 & 0xff;
     blue = color24 & 0xff;
