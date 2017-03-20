@@ -31,3 +31,18 @@
     dx = x2 - x1;
     dy = y2 - y1;
     dist = Math.sqrt(dx * dx + dy * dy);
+## 绘制一条穿越某个点的曲线
+    //xt,yt 是要穿过的点
+    x1 = xt * 2 - (x0 + x2) / 2;
+    y1 = yt * 2 - (y0 + y2) / 2;
+    context.moveTo(x0,y0);
+    context.quadraticCurveTo(x1,y1,x2,y2);
+## 十进制转换十六进制
+    decimaValue.toString(16);
+## 颜色转换
+    ###组合三原色
+    color = red << 16 | green << 8 | blue;
+    ###提取三原色
+    red = color24 >> 16 & 0xff;
+    green = color24 >> 8 & 0xff;
+    blue = color24 & 0xff;

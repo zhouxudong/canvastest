@@ -39,7 +39,7 @@
         cxt.putImageData(imagedata, 0, 0);
     }
     canv.addEventListener("mousedown", function () {
-        brush_color = utils.parseColor(Math.random() * 0xffffff, true);
+        brush_color = utils.parseCfolor(Math.random() * 0xffffff, true);
         canv.addEventListener("mousemove", onMouseMove, false);
     },false);
 
