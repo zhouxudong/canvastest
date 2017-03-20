@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用quadraticCurveTo绘制曲线</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#fff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="500" height="500">浏览器不支持</canvas>
+<script src="statics/js/utils.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d");
+    cxt.beginPath();
+    cxt.lineTo(30, 200);
+    cxt.lineTo(100,200);
+    cxt.lineTo(100,300);
+    cxt.lineTo(40, 300);
+    cxt.closePath();
+    cxt.stroke();
+    cxt.fill();
+
+
+
+</script>
+</body>
+</html>

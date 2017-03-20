@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用quadraticCurveTo绘制曲线</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#fff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="500" height="500">浏览器不支持</canvas>
+<script src="../statics/js/utils.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        points = [],
+        numPoints = 9,
+        ctrlPoint = {};
+    for(var i = 0; i < numPoints; i++){
+        points.push({
+            x: Math.random() * canv.width,
+            y: Math.random() * canv.height
+        })
+    }
+
+    cxt.beginPath();
+    cxt.moveTo(points[0].x, points[0].y);
+    for(i = 1; i < numPoints - 2; i++){
+        ctrlPoint.x = (points[i].x + points[i+1].x) / 2;
+        ctrlPoint.y = (points[i].y + points[i+1].y) / 2;
+        cxt.quadraticCurveTo(points[i].x, points[i].y, ctrlPoint.x, ctrlPoint.y);
+    }
+    cxt.quadraticCurveTo(points[i].x, points[i].y, points[i+1].x, points[i+1].y);
+    cxt.stroke();
+
+
+</script>
+</body>
+</html>
