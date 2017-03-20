@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>处理像素</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#fff;
+        }
+        .none{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="500" height="500">浏览器不支持</canvas>
+<img src="../statics/images/835.jpeg" id="img1"/>
+<script src="../statics/js/utils.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        video = document.getElementById("video1"),
+        img = document.images[0];
+
+    cxt.drawImage(img, 0, 0);
+
+    var imageData = cxt.getImageData(0,0,500,200),
+        pixels = imageData.data;
+    for(var i = 0, len = pixels.length; i < len; i += 4){
+        pixels[i] = 0;
+        pixels[i + 1] = pixels[i + 1];
+        pixels[i + 2] = pixels[i + 2];
+        pixels[i + 3] = pixels[i + 3];
+    }
+    cxt.putImageData(imageData,0,165);
+
+    for(var y = 0, len = pixels.length; y < len; y += 4){
+        pixels[y] = 255 - pixels[y];
+        pixels[y + 1] = 255 - pixels[y + 1];
+        pixels[y + 2] = 255 - pixels[y + 2];
+    }
+    cxt.putImageData(imageData,0,330);
+
+
+</script>
+</body>
+</html>
