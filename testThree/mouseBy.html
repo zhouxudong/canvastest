@@ -21,7 +21,8 @@
         mouse = utils.captureMouse(canv),
         speed = 3,
        arrow = new Arrow();
-
+    arrow.x = canv.width / 2;
+    arrow.y = canv.height / 2;
     (function drawFram() {
         window.requestAnimationFrame(drawFram, canv);
         cxt.clearRect(0, 0, canv.width, canv.height);
