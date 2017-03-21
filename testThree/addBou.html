@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>过界回到初始位置</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        log = document.getElementById("log"),
+        balls = [],
+        numBalls = 80,
+        gravity = 0.5;
+
+    for(var ball, i = 0; i < numBalls; i++){
+        ball = new Ball(2, Math.random() * 0xffffff);
+        ball.x = canv.width / 2;
+        ball.y = canv.height;
+        ball.vx = Math.random() * 2 - 1;
+        ball.vy = Math.random() * -10 - 10;
+        balls.push(ball);
+    }
+
+    function draw(ball, pos) {
+        ball.vy += gravity;
+        ball.x += ball.vx;
+        ball.y += ball.vy;
+        if((ball.x - ball.radius) > canv.width ||
+            (ball.x + ball.radius) < 0 ||
+            (ball.y - ball.radius) > canv.height ||
+            (ball.y + ball.radius) < 0){
+
+            ball.x = canv.width / 2;
+            ball.y = canv.height;
+            ball.vx = Math.random() * 2 - 1;
+            ball.vy = Math.random() * -10 - 10;
+        }
+        ball.draw(cxt);
+    }
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        balls.forEach(draw);
+    }())
+
+</script>
+</body>
+</html>
