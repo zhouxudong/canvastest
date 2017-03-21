@@ -1,6 +1,6 @@
 function Ship() {
     this.x = 0;
-    tnis.y = 0;
+    this.y = 0;
     this.width = 25;
     this.height = 20;
     this.rotation = 0;
