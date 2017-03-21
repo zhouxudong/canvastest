@@ -3,6 +3,8 @@ function Ball(radius, color) {
     this.y = 0;
     this.radius = radius || 40;
     this.color = color || "#ff0000";
+    this.vx = 0;
+    this.vy = 0;
     this.rotation = 0;
     this.scaleX = 1;
     this.scaleY = 1;
