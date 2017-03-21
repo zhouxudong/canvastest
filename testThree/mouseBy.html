@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>画笔</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#fff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="500" height="500">浏览器不支持</canvas>
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/arrow.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        speed = 3,
+       arrow = new Arrow();
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        var dy = mouse.y - arrow.y,
+            dx = mouse.x - arrow.x,
+            angle = Math.atan2(dy, dx),
+            vx = Math.cos(angle) * speed,
+            vy = Math.sin(angle) * speed;
+
+        arrow.rotation = angle;
+        arrow.x += vx;
+        arrow.y += vy;
+        arrow.draw(cxt);
+    }())
+
+
+
+
+</script>
+</body>
+</html>
