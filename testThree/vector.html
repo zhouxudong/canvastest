@@ -12,6 +12,7 @@
 </head>
 <body>
 <canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
 <script src="../statics/js/utils.js"></script>
 <script src="../statics/js/arrow.js"></script>
 <script src="../statics/js/ball.js"></script>
@@ -22,18 +23,63 @@
         mouse = utils.captureMouse(canv),
         vr = 2,
         vx = 0,
-        ax = 0.1,
+        vy = 0,
+        ax = 0,
+        ay = 0,
         arrow = new Arrow(),
         ball = new Ball();
+    ball.x = canv.width / 2;
+    ball.y = canv.height / 2;
+    window.addEventListener("keydown", function (event) {
+        switch (event.keyCode){
+            case 37:
+                ax = -0.1;
+                break;
+            case 39:
+                ax = 0.1;
+                break;
+            case 38:
+                ay = -0.1;
+                break;
+            case 40:
+                ay = 0.1;
+                break;
+        }
+    },false);
+    window.addEventListener("keyup", function (event) {
+        ax = 0;
+        ay = 0;
+    },false);
 
     (function drawFram() {
         window.requestAnimationFrame(drawFram, canv);
         cxt.clearRect(0, 0, canv.width, canv.height);
 
 
-        vx += ax;
-        ball.x += vx;
-        //arrow.rotation += vr * Math.PI/18;
+        vy += ay;
+        if(ball.x < ball.radius){
+            ball.x = ball.radius;
+            vx = 0;
+            ax = 0;
+        }else if(ball.x > (canv.width - ball.radius)){
+            ball.x = canv.width - ball.radius;
+            vx = 0;
+            ax = 0;
+        }else{
+            vx += ax;
+            ball.x += vx;
+        }
+        if(ball.y < ball.radius){
+            ball.y = ball.radius;
+            vy = ay = 0;
+        }else if(ball.y > (canv.height - ball.radius)){
+            ball.y = canv.height - ball.radius;
+            vy = ay = 0;
+        }else{
+            vy += ay;
+            ball.y += vy;
+        }
+
         ball.draw(cxt);
     }())
 
