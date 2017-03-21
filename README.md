@@ -46,3 +46,13 @@
     red = color24 >> 16 & 0xff;
     green = color24 >> 8 & 0xff;
     blue = color24 & 0xff;
+## 速度、加速度、向量分解
+### 角速度分解为x、y轴上的速度向量
+    vx = speed * Math.cos(angle);
+    vy = speed * Math.sin(angle);
+### 将角加速度（作用域物体上的力） 分解为x、y轴上的加速度
+    ax = force * Math.cos(angle);
+    ay = force * Math.sin(angle);
+### 将加速度加入速度向量
+    vx += ax;
+    vy += ay;
