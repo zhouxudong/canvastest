@@ -71,7 +71,7 @@
     object.y + object.height / 2 < top){
         //reset object position and velocity
     }
-### 越界物体屏幕环绕；ex: 贪吃蛇
+### 越界物体屏幕环绕；
     if(object.x - object.width / 2 > right){
         object.x = left - object.width / 2;
     }else if(object.x + object.width / 2 < left){
