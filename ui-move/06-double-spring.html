@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>弹簧偏移量--有长度</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        ball0 = new Ball(30),
+        ball1 = new Ball(20),
+        ball2 = new Ball(20),
+        ball0_dragging = false,
+        ball1_dragging = false,
+        ball2_dragging = false,
+        spring = 0.03,
+        springLength = 100,
+        friction = 0.9,
+        gravity = 2;
+
+    ball0.x = Math.random() * canv.width;
+    ball0.y = Math.random() * canv.height;
+    ball1.x = Math.random() * canv.width;
+    ball1.y = Math.random() * canv.height;
+
+    canv.addEventListener("mousedown", function () {
+        if(utils.containsPoint(ball0.getBounds(), mouse.x, mouse.y)){
+            ball0_dragging = true;
+        }
+        if(utils.containsPoint(ball1.getBounds(), mouse.x, mouse.y)){
+            ball1_dragging = true;
+        }
+        if(utils.containsPoint(ball2.getBounds(), mouse.x, mouse.y)){
+            ball2_dragging = true;
+        }
+    },false);
+    canv.addEventListener("mouseup", function () {
+        if(ball0_dragging || ball1_dragging || ball2_dragging){
+            ball0_dragging = false;
+            ball1_dragging = false;
+            ball2_dragging = false;
+        }
+    },false);
+    canv.addEventListener("mousemove", function () {
+        if(ball0_dragging){
+            ball0.x = mouse.x;
+            ball0.y = mouse.y;
+        }
+        if(ball1_dragging){
+            ball1.x = mouse.x;
+            ball1.y = mouse.y;
+        }
+        if(ball2_dragging){
+            ball2.x = mouse.x;
+            ball2.y = mouse.y;
+        }
+    },false);
+
+    function springTo(ballA, ballB) {
+        var dx = ballB.x - ballA.x,
+            dy = ballB.y - ballA.y,
+            angle = Math.atan2(dy, dx),
+            targetX = ballB.x - Math.cos(angle) * springLength,
+            targetY = ballB.y - Math.sin(angle) * springLength;
+
+        ballA.vx += (targetX - ballA.x) * spring;
+        ballA.vy += (targetY - ballA.y) * spring;
+        ballA.vx *= friction;
+        ballA.vy *= friction;
+        //if(ball0_dragging || ball1_dragging) ballA.vy += gravity;
+        ballA.x += ballA.vx;
+        ballA.y += ballA.vy;
+    }
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        if(!ball0_dragging){
+            springTo(ball0, ball1);
+            springTo(ball0, ball2);
+        }
+        if(!ball1_dragging){
+            springTo(ball1, ball0);
+            springTo(ball1, ball2);
+        }
+        if(!ball2_dragging){
+            springTo(ball2, ball0);
+            springTo(ball2, ball1);
+        }
+
+        cxt.beginPath();
+        cxt.moveTo(ball0.x, ball0.y);
+        cxt.lineTo(ball1.x, ball1.y);
+        cxt.lineTo(ball2.x, ball2.y);
+        cxt.lineTo(ball0.x, ball0.y);
+        cxt.stroke();
+        ball0.draw(cxt);
+        ball1.draw(cxt);
+        ball2.draw(cxt);
+    }())
+
+
+</script>
+</body>
+</html>
