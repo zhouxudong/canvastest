@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>碰撞反弹 | 摩擦系数</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+<textarea id="log"></textarea>
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        ball = new Ball(),
+        mouse = utils.captureMouse(canv),
+        log = document.getElementById("log");
+
+    ball.x = canv.width / 2;
+    ball.y = canv.height / 2;
+    ball.draw(cxt);
+
+    canv.addEventListener("mousedown", function () {
+        if(utils.containsPoint(ball.getBounds(), mouse.x, mouse.y)){
+            log.value = "in ball: mousedown";
+        }else{
+            log.value = "canvas: mousedown";
+        }
+    },false);
+    canv.addEventListener("mouseup", function () {
+        if(utils.containsPoint(ball.getBounds(), mouse.x, mouse.y)){
+            log.value = "in ball: mouseup";
+        }else{
+            log.value = "canvas: mouseup";
+        }
+    },false);
+    canv.addEventListener("mousemove", function () {
+        if(utils.containsPoint(ball.getBounds(), mouse.x, mouse.y)){
+            log.value = "in ball : mousemove";
+        }else{
+            log.value = "canvas: mousemove"
+        }
+    },false);
+
+
+
+</script>
+</body>
+</html>
