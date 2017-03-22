@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>向量 | 加速度 | 屏幕环绕</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#000;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ship.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        ship = new Ship(),
+        vr = 0,
+        vx = 0,
+        vy = 0,
+        trust = 0,
+        friction = 0.998;
+    ship.x = canv.width / 2;
+    ship.y = canv.height / 2;
+
+    window.addEventListener("keydown", function (event) {
+        switch (event.keyCode){
+            case 37:
+                vr = -3;
+                break;
+            case 39:
+                vr = 3;
+                break;
+            case 38:
+                trust = 0.05;
+                ship.showFlame = true;
+                break;
+        }
+    },false);
+    window.addEventListener("keyup", function (event) {
+        vr = 0;
+        trust = 0;
+        ship.showFlame = false;
+    },false);
+
+
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        ship.rotation += vr * Math.PI/180;
+        var angle = ship.rotation,
+            ax = Math.cos(angle) * trust,
+            ay = Math.sin(angle) * trust,
+            left = 0,
+            right = canv.width,
+            top = 0,
+            bottom = canv.height;
+        vx += ax;
+        vy += ay;
+        vx *= friction;
+        vy *= friction;
+        ship.x += vx;
+        ship.y += vy;
+
+        if(ship.x - ship.width / 2 > right){
+            ship.x = left - ship.width / 2;
+        }else if( ship.x + ship.width / 2 < left){
+            ship.x = right + ship.width / 2;
+        }
+
+        if(ship.y - ship.height / 2 > bottom){
+            ship.y = top - ship.height / 2;
+        }else if(ship.y < top - ship.height / 2){
+            ship.y = bottom + ship.height / 2;
+        }
+
+        ship.draw(cxt);
+    }())
+
+
+
+
+</script>
+</body>
+</html>
