@@ -26,7 +26,8 @@
         gravity = 3;
 
     while (numBalls --){
-        balls.push(new Ball(20));
+        var color = utils.parseColor(Math.random() * 0xffffff);
+        balls.push(new Ball(20, color));
     }
 
     function draw(ballB, i) {

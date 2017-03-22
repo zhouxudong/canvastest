@@ -91,7 +91,7 @@ var utils = {
             return window.parseInt(color, 16);
         }else{
             if(typeof color === "number"){
-                color = "#" + ("0000" + (color | 0).toString(16).substr(-6))
+                color = "#" + ( (color | 0).toString(16).substr(-6))
             }
             return color;
         }
