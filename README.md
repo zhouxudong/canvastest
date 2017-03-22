@@ -95,3 +95,39 @@
 ### 摩擦力-简单、不精确
     vx *= friction;
     vy *= friction;
+## 缓动与弹动  easing && spring
+### 简单缓动
+    var dx = targetX - object.x,
+        dy = targetY - object.y;
+    vx = dx * easing;
+    vy = dy * easing;
+    object.x += vx;
+    object.y += vy;
+
+    *精简
+    object.x += (targetX - object.x) * easing;
+    object.y += (targetY - object.y) * easing;
+### 简单弹动
+    var ax = (targetX - object.x) * spring,
+        ay = (targetY - object.y) * spring;
+    vx += ax;
+    vy += ay;
+    vx *= friction;
+    vy *= friction;
+    object.x += vx;
+    object.y += vy;
+
+    *精简
+    vx += (targetX - object.x) * spring;
+    vy += (targetY - object.y) * spring;
+    object.x += (vx *= friction);
+    object.y += (vy *= friction);
+### 有偏移量（有自己长度）的弹动
+    var dx = object.x - fixedX, //fixed  like mouse
+        dy = object.y - fixedY,
+        angle = Math.atan2(dy, dx),
+        targetX = fixedX + Math.cos(angle) * springLength,
+        targetY = fixedY + Math.sin(angle) * springLength;
+        //弹动到 targetX, targetY 跟上面一样
+
+
