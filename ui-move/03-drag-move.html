@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>碰撞反弹 | 碰撞消耗 | 投掷 </title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+<textarea id="log"></textarea>
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        ball = new Ball(),
+        mouse = utils.captureMouse(canv),
+        log = document.getElementById("log"),
+        px = 0, // x轴偏移量
+        py = 0, // y轴偏移量
+        bounce = -0.8,
+        gravity = 0.2,
+        friction = 0.998,
+        vx = Math.random() * 10 - 5,
+        vy = -10,
+        isMouseDown = false,
+        oldX,oldY;
+
+    ball.x = canv.width / 2;
+    ball.y = canv.height / 2;
+
+    canv.addEventListener("mousedown", function () {
+        if(utils.containsPoint(ball.getBounds(), mouse.x, mouse.y)){
+            px = mouse.x - ball.x;
+            py = mouse.y - ball.y;
+            isMouseDown = true;
+            oldX = mouse.x;
+            oldY = mouse.y;
+            canv.addEventListener("mouseup", mouseup, false);
+            canv.addEventListener("mousemove", ballmove, false);
+        }
+    },false);
+    function ballmove() {
+        ball.x = mouse.x - px;
+        ball.y = mouse.y - py;
+    }
+
+    function mouseup() {
+        isMouseDown = false;
+        canv.removeEventListener("mouseup", mouseup, false);
+        canv.removeEventListener("mousemove", ballmove, false);
+    }
+    function checkBoundaries() {
+        var left = 0,
+            right = canv.width,
+            top = 0,
+            bottom = canv.height;
+        vy += gravity;
+        if(Math.abs(vx) > 0.001){
+            vx *= friction;
+        }
+        ball.x += vx;
+        ball.y += vy;
+
+        if(ball.x + ball.radius > right){
+            ball.x = right - ball.radius;
+            vx *= bounce;
+        }else if(ball.x - ball.radius < left){
+            ball.x = left + ball.radius;
+            vx *= bounce;
+        }
+        if(ball.y + ball.radius > bottom){
+            ball.y = bottom - ball.radius;
+            vy *= bounce;
+        }else if(ball.y - ball.radius < top){
+            ball.y = top + ball.radius;
+            vy *= bounce;
+        }
+    }
+    function trankVelocity() {
+        vx = ball.x - oldX;
+        vy = ball.y - oldY;
+        oldX = ball.x;
+        oldY = ball.y;
+    }
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        if(!isMouseDown){
+            checkBoundaries();
+        }else{
+            trankVelocity();
+        }
+        ball.draw(cxt);
+    }())
+
+
+
+</script>
+</body>
+</html>
