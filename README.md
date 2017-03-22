@@ -56,3 +56,42 @@
 ### 将加速度加入速度向量
     vx += ax;
     vy += ay;
+## 越界处理和摩擦力
+### 移除越界物体，从数组中移除
+    if(object.x - object.width / 2 > right ||
+    object.x + object.width / 2 < left ||
+    object.y - object.height > bottom ||
+    object.y + object.height / 2 < top){
+        //remove object
+    }
+### 重置越界物体；ex:喷泉、瀑布
+    if(object.x - object.width / 2 > right ||
+    object.x + object.width / 2 < left ||
+    object.y - object.height > bottom ||
+    object.y + object.height / 2 < top){
+        //reset object position and velocity
+    }
+### 越界物体屏幕环绕；ex: 贪吃蛇
+    if(object.x - object.width / 2 > right){
+        object.x = left - object.width / 2;
+    }else if(object.x + object.width / 2 < left){
+        object.x = right + object.width / 2;
+    }
+    if(object.y - object.height / 2 > bottom){
+        object.y = top - object.width / 2;
+    }else if(object.y + object.height / 2 < top){
+        object.y = bottom + object.height / 2;
+    }
+### 摩擦力-精确用法
+    speed = Math.sqrt(vx * vx, vy * vy);
+    angle = Math.atan2(vy, vx);
+    if(speed > friction){
+        speed -= friction;
+    }else{
+        speed = 0;
+    }
+    vx = Math.cos(angle) * speed;
+    vy = Math.sin(angle) * speed;
+### 摩擦力-简单、不精确
+    vx *= friction;
+    vy *= friction;
