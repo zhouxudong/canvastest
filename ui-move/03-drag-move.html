@@ -64,8 +64,8 @@
         vy += gravity;
         if(Math.abs(vx) > 0.001){
             vx *= friction;
+            ball.x += vx;
         }
-        ball.x += vx;
         ball.y += vy;
 
         if(ball.x + ball.radius > right){
