@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>弹簧偏移量--有长度</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        ball = new Ball(30),
+        spring = 0.03,
+        friction = 0.98,
+        gravity = 2,
+        vx = 0,
+        vy = 0,
+        springLength = 100;
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        var dx = ball.x - mouse.x,
+            dy = ball.y - mouse.y,
+            angle = Math.atan2(dy, dx),
+            targetX = mouse.x + Math.cos(angle) * springLength,
+            targetY = mouse.y + Math.sin(angle) * springLength;
+
+        vx += (targetX - ball.x) * spring;
+        vy += (targetY - ball.y) * spring;
+        vy *= friction;
+        vx *= friction;
+        vy += gravity;
+        ball.x += vx;
+        ball.y += vy;
+
+        cxt.beginPath();
+        cxt.moveTo(mouse.x, mouse.y);
+        cxt.lineTo(ball.x, ball.y);
+        cxt.stroke();
+        ball.draw(cxt);
+    }())
+
+
+</script>
+</body>
+</html>
