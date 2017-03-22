@@ -100,5 +100,10 @@ var utils = {
     containsPoint: function (react, x, y) {
         return !(x < react.x || x > react.x + react.width ||
                 y < react.y || y > react.y + react.height);
+    },
+    //检测两个矩形是否有交互
+    intersects: function (rectA, rectB) {
+        return !(rectA.x + rectA.width < rectB.x || rectB.x + rectB.width < rectA.x ||
+                rectA.y + rectA.height < rectB.y || rectB.y + rectB.height < rectA.y)
     }
 }
