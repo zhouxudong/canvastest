@@ -88,5 +88,10 @@ var utils = {
             }
             return color;
         }
+    },
+    //当前鼠标的point 是否位于 一个含有（x,y,width,height）的矩形内
+    containsPoint: function (react, x, y) {
+        return !(x < react.x || x > react.x + react.width ||
+                y < react.y || y > react.y + react.height);
     }
 }

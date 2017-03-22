@@ -26,3 +26,12 @@ Ball.prototype.draw = function (cxt) {
     }
     cxt.restore();
 }
+//返回容纳球的矩形
+Ball.prototype.getBounds = function () {
+    return {
+        x: this.x - this.radius,
+        y: this.y - this.radius,
+        height: this.radius * 2,
+        width: this.radius * 2
+    }
+}
