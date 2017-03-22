@@ -21,33 +21,40 @@
         cxt = canv.getContext("2d"),
         ball = new Ball(),
         mouse = utils.captureMouse(canv),
-        log = document.getElementById("log");
+        log = document.getElementById("log"),
+        px = 0, // x轴偏移量
+        py = 0; // y轴偏移量
 
     ball.x = canv.width / 2;
     ball.y = canv.height / 2;
     ball.draw(cxt);
 
+    function ballmove() {
+
+        ball.x = mouse.x - px;
+        ball.y = mouse.y - py;
+    }
+
+    function mouseup() {
+        canv.removeEventListener("mouseup", mouseup, false);
+        canv.removeEventListener("mousemove", ballmove, false);
+    }
+
     canv.addEventListener("mousedown", function () {
         if(utils.containsPoint(ball.getBounds(), mouse.x, mouse.y)){
-            log.value = "in ball: mousedown";
-        }else{
-            log.value = "canvas: mousedown";
+            px = mouse.x - ball.x;
+            py = mouse.y - ball.y;
+            canv.addEventListener("mouseup", mouseup, false);
+            canv.addEventListener("mousemove", ballmove, false);
         }
     },false);
-    canv.addEventListener("mouseup", function () {
-        if(utils.containsPoint(ball.getBounds(), mouse.x, mouse.y)){
-            log.value = "in ball: mouseup";
-        }else{
-            log.value = "canvas: mouseup";
-        }
-    },false);
-    canv.addEventListener("mousemove", function () {
-        if(utils.containsPoint(ball.getBounds(), mouse.x, mouse.y)){
-            log.value = "in ball : mousemove";
-        }else{
-            log.value = "canvas: mousemove"
-        }
-    },false);
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        ball.draw(cxt);
+    }())
 
 
 
