@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>spring 弹动到达指定位置</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        ball = new Ball(),
+        spring = 0.05,
+        friction = 0.9,
+        vx = 0,
+        vy = 0,
+        gravity = 5;
+
+
+    (function drawFram() {
+        animRequest = window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        var dx = mouse.x - ball.x,
+            dy = mouse.y - ball.y,
+            ax = dx * spring,   //spring: 持续的拉力，加速度不断增大
+            ay = dy * spring;
+
+        vx += ax;
+        vy += ay;
+        vy += gravity;
+        if(Math.abs(vx) > 0.001){
+            vx *= friction;
+            vy *= friction;
+            ball.x += vx;
+            ball.y += vy;
+        }
+        cxt.beginPath();
+        cxt.moveTo(ball.x, ball.y);
+        cxt.lineTo(mouse.x, mouse.y);
+        cxt.stroke();
+
+        ball.draw(cxt);
+    }());
+
+</script>
+</body>
+</html>
