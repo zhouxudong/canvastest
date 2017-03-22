@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>spring 弹动到达指定位置 | 链式铅球 | 多控制点</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        ball = new Ball(30),
+        handles = [],
+        numBalls = 3,
+        spring = 0.03,
+        friction = 0.98,
+        gravity = 5,
+        movingBall = null,
+        handle;
+    ball.x = canv.width / 2;
+    ball.y = canv.height / 2;
+    while (numBalls --){
+        handle = new Ball(20,"#000000");
+        handle.x = Math.random() * canv.width;
+        handle.y = Math.random() * canv.height;
+        handles.push(handle);
+    }
+    canv.addEventListener("mousedown", function () {
+        handles.forEach(function (ball) {
+            if(utils.containsPoint(ball.getBounds(), mouse.x, mouse.y)){
+                movingBall = ball;
+            }
+        })
+    },false);
+    canv.addEventListener("mouseup", function () {
+        movingBall = null;
+    },false);
+    canv.addEventListener("mousemove", function () {
+        if(movingBall){
+            movingBall.x = mouse.x;
+            movingBall.y = mouse.y;
+        }
+    },false);
+    function drawHandle(handle) {
+        cxt.moveTo(handle.x, handle.y);
+        cxt.lineTo(ball.x, ball.y);
+        cxt.stroke();
+        handle.draw(cxt);
+    }
+    function applyHandle(handle) {
+        var dx = handle.x - ball.x,
+            dy = handle.y - ball.y;
+
+        ball.vx += dx * spring;
+        ball.vy += dy * spring;
+    }
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        handles.forEach(applyHandle);
+        ball.vx *= friction;
+        ball.vy *= friction;
+        ball.vy += gravity;
+
+        ball.x += ball.vx;
+        ball.y += ball.vy;
+
+
+        cxt.beginPath();
+        handles.forEach(drawHandle);
+        ball.draw(cxt);
+    }())
+
+
+
+</script>
+</body>
+</html>
