@@ -7,6 +7,13 @@ if(!window.requestAnimationFrame){
                                         return window.setTimeout(callback,1000/60)
                                     })
 }
+if(!window.cancelAnimationFrame){
+    window.cancelAnimationFrame = (window.webkitCancelAnimationFrame ||
+                                    window.mozCancelAnimationFrame ||
+                                    window.oCancelAnimationFrame ||
+                                    window.msCancelAnimationFrame ||
+                                    window.clearTimeout);
+}
 
 var utils = {
     captureMouse: function (element) {
