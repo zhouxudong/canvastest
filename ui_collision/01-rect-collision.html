@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>spring 弹动到达指定位置</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/box.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        boxs = [],
+        activeBox = createBox(),
+        spring = 0.05,
+        friction = 0.9,
+        vx = 0,
+        vy = 0,
+        gravity = 0.2;
+
+    function createBox() {
+        var box = new Box(Math.random() * 40 + 10, Math.random() * 40 + 10);
+        box.x = Math.random() * canv.width;
+        boxs.push(box);
+        return box;
+    }
+    function drawBox(box, i){
+        if(activeBox !== box && utils.intersects(activeBox, box)){
+            activeBox.y = box.y - activeBox.height;
+            activeBox = createBox();
+        }
+
+        box.draw(cxt);
+    }
+    (function drawFram() {
+        animRequest = window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        activeBox.vy += gravity;
+        activeBox.y += activeBox.vy;
+
+        if(activeBox.y + activeBox.height > canv.height){
+            activeBox.y = canv.height - activeBox.height;
+            activeBox = createBox();
+        }
+
+        boxs.forEach(drawBox)
+    }());
+
+</script>
+</body>
+</html>
