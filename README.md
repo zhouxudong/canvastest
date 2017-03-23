@@ -6,11 +6,11 @@
 ## 角度与弧度
    * 弧度 = 角度 * Math.PI / 180
    * 角度 = 弧度 * 180 ／ Math.PI
-## 朝鼠标旋转
+## 朝鼠标旋转 -- [示例代码](https://github.com/zhouxudong/canvastest/blob/master/testOne/test1.html)
     dx = mouse.x - object.x;
     dy = mouse.y - object.y;
     object.rotation = Math.atan2(dy,dx) * 180 / Math.PI
-## 创建波
+## 创建波  -- [示例代码](https://github.com/zhouxudong/canvastest/blob/master/testOne/test6.html)
     (function drawFram(){
         window.requestAnimationFrame(drawFram, canvas);
 
@@ -57,21 +57,21 @@
     vx += ax;
     vy += ay;
 ## 越界处理和摩擦力
-### 移除越界物体，从数组中移除
+### 移除越界物体，从数组中移除  [示例代码](https://github.com/zhouxudong/canvastest/blob/master/testThree/removeBou.html)
     if(object.x - object.width / 2 > right ||
     object.x + object.width / 2 < left ||
     object.y - object.height > bottom ||
     object.y + object.height / 2 < top){
         //remove object
     }
-### 重置越界物体；ex:喷泉、瀑布
+### 重置越界物体；ex:[喷泉](https://github.com/zhouxudong/canvastest/blob/master/testThree/addBou.html)、瀑布
     if(object.x - object.width / 2 > right ||
     object.x + object.width / 2 < left ||
     object.y - object.height > bottom ||
     object.y + object.height / 2 < top){
         //reset object position and velocity
     }
-### 越界物体屏幕环绕；
+### 越界物体屏幕环绕； [小飞船游戏](https://github.com/zhouxudong/canvastest/blob/master/testThree/ship.html)
     if(object.x - object.width / 2 > right){
         object.x = left - object.width / 2;
     }else if(object.x + object.width / 2 < left){
@@ -82,7 +82,7 @@
     }else if(object.y + object.height / 2 < top){
         object.y = bottom + object.height / 2;
     }
-### 摩擦力-精确用法
+### 摩擦力-精确用法  [示例代码](https://github.com/zhouxudong/canvastest/blob/master/testThree/friction.html)
     speed = Math.sqrt(vx * vx, vy * vy);
     angle = Math.atan2(vy, vx);
     if(speed > friction){
@@ -96,7 +96,7 @@
     vx *= friction;
     vy *= friction;
 ## 缓动与弹动  easing && spring
-### 简单缓动
+### 简单缓动 [示例代码](https://github.com/zhouxudong/canvastest/blob/master/ui-move/04-easing-1.html)
     var dx = targetX - object.x,
         dy = targetY - object.y;
     vx = dx * easing;
@@ -107,7 +107,7 @@
     *精简
     object.x += (targetX - object.x) * easing;
     object.y += (targetY - object.y) * easing;
-### 简单弹动
+### 简单弹动  [示例代码](https://github.com/zhouxudong/canvastest/blob/master/ui-move/05-spring.html)
     var ax = (targetX - object.x) * spring,
         ay = (targetY - object.y) * spring;
     vx += ax;
@@ -122,7 +122,7 @@
     vy += (targetY - object.y) * spring;
     object.x += (vx *= friction);
     object.y += (vy *= friction);
-### 有偏移量（有自己长度）的弹动
+### 有偏移量（有自己长度）的弹动  [示例代码](https://github.com/zhouxudong/canvastest/blob/master/ui-move/05-spring-length.html)
     var dx = object.x - fixedX, //fixed  like mouse
         dy = object.y - fixedY,
         angle = Math.atan2(dy, dx),
@@ -149,7 +149,7 @@
     object.y = centerY + Math.sin(angle) * radius;
     angle += vr;
 ### [高级坐标旋转](https://github.com/zhouxudong/canvastest/blob/master/ui_collision/04-rotate.html)
-    ```html
+
     //只需要知道相对于中心点物体的x,y坐标和旋转角度（rotation),就能计算出旋转后的x1,y1位置
     x1 = x * cos(rotation) - y * sin(rotation);
     y1 = y * cos(rotation) + x * sin(rotation);
@@ -180,9 +180,7 @@
     //然后推导后得到 只用旋转角度就能计算处x1,y1的位置
     x1 = x * cos(rotation) - y * sin(rotation);
     y1 = y * cos(rotation) + x * sin(rotation);
-    ```
 
-[高级坐标旋转](https://github.com/zhouxudong/canvastest/blob/master/ui_collision/04-rotate.html)
 
 
 
