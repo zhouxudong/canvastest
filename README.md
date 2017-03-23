@@ -180,6 +180,37 @@
     //然后推导后得到 只用旋转角度就能计算处x1,y1的位置
     x1 = x * cos(rotation) - y * sin(rotation);
     y1 = y * cos(rotation) + x * sin(rotation);
+### 动量守恒
+    F = m * a
+    p = m * v   //动量 = 质量 * 速度
+
+    //总动量在碰撞前后相同，对于两个物体object0 和object1
+    momentum0 + momentum1 = momentum0Final + momentum1Final
+
+    //或者
+
+    （m0 * v0) + (m1 * v1) = (m0 * v0Final) + (m1 * v1Final)
+
+    //现在要计算两个物体的最终速度，v0Final 和 v1Final;
+    //解一个有两个未知数的方程，就得找出另一个含有相同两个未知数的方程，
+
+    //动能方程:
+    KE = 0.5 m * v * v;
+
+    //动能在碰撞前后也是相同的
+    KE0 + KE1 = KE0Final + KE1Final;
+
+    //或者
+
+    (0.5 * m0 * v0 * v0) + (0.5 * m1 * v1 * v1) = (0.5 * m0 * v0Final * v0Final) + (0.5 * m1 * v1Final * v1Final);
+
+    //消去0.5得到
+    m0 * v0 * v0 + m1 * v1 * v1 = m0 * v0Final * v0Final + m1 * v1Final * v1Final;
+
+    //使用带入消元法，可得
+    v0Final = ((m0 - m1) * v0 + 2 * m1 * v1) / (m0 + m1);
+    v1Final = ((m1 - m0) * v1 + 2 * m0 * v0) / (m0 + m1);
+
 
 
 
