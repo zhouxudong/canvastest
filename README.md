@@ -179,6 +179,7 @@
     //然后推导后得到 只用旋转角度就能计算处x1,y1的位置
     x1 = x * cos(rotation) - y * sin(rotation);
     y1 = y * cos(rotation) + x * sin(rotation);
+
     [示例代码](https://github.com/zhouxudong/canvastest/blob/master/ui_collision/04-rotate.html)
 
 
