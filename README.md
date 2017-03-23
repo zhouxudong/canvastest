@@ -129,5 +129,57 @@
         targetX = fixedX + Math.cos(angle) * springLength,
         targetY = fixedY + Math.sin(angle) * springLength;
         //弹动到 targetX, targetY 跟上面一样
+## 斜面碰撞
+### 坐标旋转（围绕中心点centerX, centerY 旋转）
+    //已知角度和半径
+    object.x = centerX + Math.cos(angle) * radius;
+    object.y = centerY + Math.sin(angle) * radius;
+    angle += vr;
+    //已知物体的位置 和 中心点   计算角度和半径
+    //这种旋转对于单个物体来说可以，特别上角度和半径只需计算一次的情况
+    //但是在更动态的例子里，可能需要旋转多个物体，而他们相对于中心点的
+    //位置各不相同。所以，在每一帧里，需要为每一个物体计算距离、角度和
+    //半径，然后把vr累加到角度上，最后计算新的x,y坐标，不优雅，不高效
+    var dx = object.x - centerX,
+        dy = object.y - centerY,
+        angle = Math.atan2(dy, dx),
+        radius = Math.sqrt(dx * dx + dy * dy);
+    //重复上面的code
+    object.x = centerX + Math.cos(angle) * radius;
+    object.y = centerY + Math.sin(angle) * radius;
+    angle += vr;
+### 高级坐标旋转
+    //只需要知道相对于中心点的x,y坐标和旋转角度（rotation),就能计算出旋转后的x,y位置
+    x1 = x * cos(rotation) - y * sin(rotation);
+    y1 = y * cos(rotation) + x * sin(rotation);
+    //具体说，是旋转物体相对于中心点的坐标,(上面的是0，0)，也可以把公式写成这样
+    x1 = (x - centerX) * cos(rotation) - (y - centerY) * sin(rotation);
+    y1 = (y - centerY) * cos(rotation) + (x - centerX) * sin(rotation);
+
+    //上面的公式推导
+    //物体当前位于x,y处，相对于中心点的角度是angle, 旋转的角度是rotation,旋转后位于x1,y1
+    x = radius * cos(angle);
+    y = radius * sin(angle);
+    //旋转后坐标
+    x1 = radius * cos(angle + rotation);
+    y1 = radius * sin(angle + rotation);
+    //两角之和的余弦值
+    cos(a + b) = cosa * cosb - sina * sinb
+    //两角之和的正弦值
+    sin(a + b) = sina * cosb + cosa * sinb
+    //把公式展开
+    x1 = radius * cos(angle) * cos(rotation) - radius * sin(angle) * sin(rotation)
+    y1 = radius * sin(angle) * cos(rotation) + radius * cos(angle) * sin(rotation)
+    //把x,y变量带入公式
+    radius = x / cos(angle)
+    radisu = y / sin(angle)
+
+    x1 = x / cos(angle) * cos(angle) * cos(rotation) - y / sin(angle) * sin(angle) * sin(rotation)
+    y1 = y / sin(angle) * sin(angle) * cos(rotation) + x / cos(angle) * cos(angle) * sin(rotation)
+    //然后推导后得到 只用旋转角度就能计算处x1,y1的位置
+    x1 = x * cos(rotation) - y * sin(rotation);
+    y1 = y * cos(rotation) + x * sin(rotation);
+
+
 
 
