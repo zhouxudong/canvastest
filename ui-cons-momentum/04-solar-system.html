@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>过界回到初始位置</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1200" height="800">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        bounce = -1,
+        particles = [],
+        numParticles = 5,
+        sun = new Ball(80),
+        earth = new Ball(20),
+        mercury = new Ball(10),
+        particle1 = new Ball(20),
+        particle2 = new Ball(10);
+    sun.x = canv.width / 2;
+    sun.y = canv.height / 2;
+    sun.mass = 10000;
+    particles.push(sun);
+
+//    mercury.x = canv.width / 2 + 150;
+//    mercury.y = canv.height / 2;
+//    mercury.mass = 1;
+//    mercury.vy = 8;
+//    particles.push(mercury);
+
+    earth.x = canv.width / 2 + 200;
+    earth.y = canv.height / 2;
+    earth.mass = 1;
+    earth.vy = 7.2;
+    particles.push(earth);
+
+//
+//    particle1.x = canv.width / 2 + 250;
+//    particle1.y = canv.height / 2;
+//    particle1.mass = 5;
+//    particle1.vy = 6;
+//    particles.push(particle1);
+//
+//    particle2.x = canv.width / 2 + 350;
+//    particle2.y = canv.height / 2;
+//    particle2.mass = 0.05;
+//    particle2.vy = 5;
+//    particles.push(particle2);
+
+
+
+    numParticles = particles.length;
+
+    function rotate(x, y, sin, cos, reverse) {
+        return {
+            x: (reverse) ? (x * cos + y * sin) : (x * cos - y * sin),
+            y: (reverse) ? (y * cos - x * sin) : (y * cos + x * sin)
+        }
+    }
+    function checkCollision(ball0, ball1) {
+        var dx = ball1.x - ball0.x,
+            dy = ball1.y - ball0.y,
+            dist = Math.sqrt(dx * dx + dy * dy);
+        if(dist < ball1.radius + ball0.radius){
+            //计算两球之间的角度
+            var angle = Math.atan2(dy, dx),
+                sin = Math.sin(angle),
+                cos = Math.cos(angle);
+
+            //对小球的位置和速度进行坐标旋转
+            //旋转后的位置是x0,y0 , x1,y1; 速度是 vx0,vy0, vx1, vy1;
+
+            //以ball0作为"中心点"，所以它的坐标为（0，0），旋转后也不变；
+            //旋转ball0后的位置
+            var pos0 = {x: 0, y: 0};
+
+            //旋转ball1后的位置
+            var pos1 = rotate(dx,dy,sin,cos,true);
+
+            //旋转ball0的速度
+            var vel0 = rotate(ball0.vx, ball0.vy, sin, cos,true);
+
+            //旋转ball1的速度
+            var vel1 = rotate(ball1.vx, ball1.vy, sin, cos, true);
+
+            //旋转后 x轴上的碰撞
+            var vxTotal = vel0.x - vel1.x;
+            vel0.x = ((ball0.mass - ball1.mass) * vel0.x + 2 * ball1.mass * vel1.x) / (ball0.mass + ball1.mass);
+            vel1.x = vxTotal + vel0.x;
+
+            //更新位置，避免卡住
+            var absV = Math.abs(vel0.x) + Math.abs(vel1.x),
+                overlap = (ball0.radius + ball1.radius) - Math.abs(pos0.x - pos1.x);
+
+            //pos0.x += vel0.x;
+            //pos1.x += vel1.x;
+            pos0.x += vel0.x / absV * overlap;
+            pos1.x += vel1.x / absV * overlap;
+
+            //计算完后，位置旋转归位，反旋转
+            var pos0F = rotate(pos0.x, pos0.y, sin, cos, false),
+                pos1F = rotate(pos1.x, pos1.y, sin, cos, false);
+
+            //开始是相对于ball0(0,0)旋转，应该相对于ball0真正的位置
+            //相对于实际屏幕的位置调整位置
+            ball1.x = ball0.x + pos1F.x;
+            ball1.y = ball0.y + pos1F.y;
+            ball0.x = ball0.x + pos0F.x;
+            ball0.y = ball0.y + pos0F.y;
+
+            //速度旋转归位
+            var vel0F = rotate(vel0.x, vel0.y, sin, cos, false),
+                vel1F = rotate(vel1.x, vel1.y, sin, cos, false);
+
+            ball0.vx = vel0F.x;
+            ball0.vy = vel0F.y;
+            ball1.vx = vel1F.x;
+            ball1.vy = vel1F.y;
+        }
+    }
+    function gravitate(partA, partB) {
+        var dx = partB.x - partA.x,
+            dy = partB.y - partA.y,
+            distSQ = dx * dx + dy * dy,
+            dist = Math.sqrt(distSQ),
+            force = partA.mass * partB.mass / distSQ,
+            ax = force * dx / dist,
+            ay = force * dy / dist;
+        partA.vx += ax / partA.mass;
+        partA.vy += ay / partA.mass;
+        partB.vx -= ax / partB.mass;
+        partB.vy -= ay / partB.mass;
+
+    }
+    function move(partA, i) {
+        partA.x += partA.vx;
+        partA.y += partA.vy;
+
+        for(var partB, j = i + 1; j < numParticles; j++){
+            partB = particles[j];
+            checkCollision(partA, partB);
+            gravitate(partA, partB);
+        }
+    }
+    function draw(particle) {
+        particle.draw(cxt);
+    }
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        particles.forEach(move);
+        particles.forEach(draw);
+
+    }())
+
+</script>
+</body>
+</html>
