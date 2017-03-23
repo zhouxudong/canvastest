@@ -217,6 +217,11 @@
 
     //碰撞之后
     vx1Final = vxTotal + vx0Final;
+## 粒子与万有引力
+### 引力方程
+    force = G * m1 * m2 / (distance * distance);
+    //万有引力常量,G = 6.674 * 10^-11，不用，可以去掉常量
+    F = m1 * m2 / distance^2
 
 
 
