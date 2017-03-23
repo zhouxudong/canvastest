@@ -2,7 +2,7 @@ function Ball(radius, color) {
     this.x = 0;
     this.y = 0;
     this.radius = radius || 40;
-    this.color = color || "#ff0000";
+    this.color = (color && utils.parseColor(color)) || "#ff0000";
     this.vx = 0;
     this.vy = 0;
     this.mass = 1;  //质量
