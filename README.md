@@ -182,7 +182,7 @@
     y1 = y * cos(rotation) + x * sin(rotation);
     ```
 
-    [示例代码](https://github.com/zhouxudong/canvastest/blob/master/ui_collision/04-rotate.html)
+[高级坐标旋转](https://github.com/zhouxudong/canvastest/blob/master/ui_collision/04-rotate.html)
 
 
 
