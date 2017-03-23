@@ -136,7 +136,7 @@
     object.y = centerY + Math.sin(angle) * radius;
     angle += vr;
     //已知物体的位置 和 中心点   计算角度和半径
-    //这种旋转对于单个物体来说可以，特别上角度和半径只需计算一次的情况
+    //这种旋转对于单个物体来说可以，特别是角度和半径只需计算一次的情况
     //但是在更动态的例子里，可能需要旋转多个物体，而他们相对于中心点的
     //位置各不相同。所以，在每一帧里，需要为每一个物体计算距离、角度和
     //半径，然后把vr累加到角度上，最后计算新的x,y坐标，不优雅，不高效
@@ -149,7 +149,7 @@
     object.y = centerY + Math.sin(angle) * radius;
     angle += vr;
 ### 高级坐标旋转
-    //只需要知道相对于中心点的x,y坐标和旋转角度（rotation),就能计算出旋转后的x,y位置
+    //只需要知道相对于中心点物体的x,y坐标和旋转角度（rotation),就能计算出旋转后的x1,y1位置
     x1 = x * cos(rotation) - y * sin(rotation);
     y1 = y * cos(rotation) + x * sin(rotation);
     //具体说，是旋转物体相对于中心点的坐标,(上面的是0，0)，也可以把公式写成这样
@@ -179,6 +179,7 @@
     //然后推导后得到 只用旋转角度就能计算处x1,y1的位置
     x1 = x * cos(rotation) - y * sin(rotation);
     y1 = y * cos(rotation) + x * sin(rotation);
+    [示例代码](https://github.com/zhouxudong/canvastest/blob/master/ui_collision/04-rotate.html)
 
 
 
