@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>坐标旋转</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+<textarea id="log"></textarea>
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        balls = [],
+        numBalls = 10,
+        vr = 0.05,
+        cos = Math.cos(vr),
+        sin = Math.sin(vr),
+        centerX = canv.width / 2,
+        centerY = canv.height / 2,
+        sin, cos;
+    for(var ball, i = 0; i < numBalls; i ++){
+        ball = new Ball();
+        ball.x = Math.random() * canv.width;
+        ball.y = Math.random() * canv.height;
+        balls.push(ball);
+    }
+    function move(ball) {
+        var x1 = ball.x - centerX,
+            y1 = ball.y - centerY,
+            x2 = x1 * cos - y1 * sin,
+            y2 = y1 * cos + x1 * sin;
+        ball.x = centerX + x2;
+        ball.y = centerY + y2;
+    }
+    function draw(ball) {
+        ball.draw(cxt);
+    }
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        var angle = (mouse.x - centerX) * 0.0005;
+        cos = Math.cos(angle);
+        sin = Math.sin(angle);
+
+        balls.forEach(move);
+        balls.forEach(draw);
+    }())
+
+
+
+
+
+
+</script>
+</body>
+</html>
