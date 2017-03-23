@@ -180,7 +180,7 @@
     //然后推导后得到 只用旋转角度就能计算处x1,y1的位置
     x1 = x * cos(rotation) - y * sin(rotation);
     y1 = y * cos(rotation) + x * sin(rotation);
-### 动量守恒
+### 动量守恒 -- [示例代码](https://github.com/zhouxudong/canvastest/blob/master/ui-cons-momentum/01-billiard.html)
     F = m * a
     p = m * v   //动量 = 质量 * 速度
 
@@ -211,6 +211,12 @@
     v0Final = ((m0 - m1) * v0 + 2 * m1 * v1) / (m0 + m1);
     v1Final = ((m1 - m0) * v1 + 2 * m0 * v0) / (m0 + m1);
 
+    //两个物体的速度相减，就能得到相对速度
+    //在碰撞之前，相减获取他们的总速度
+    var vxTotal = vx0 - vx1
+
+    //碰撞之后
+    vx1Final = vxTotal + vx0Final;
 
 
 
