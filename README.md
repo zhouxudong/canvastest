@@ -148,7 +148,7 @@
     object.x = centerX + Math.cos(angle) * radius;
     object.y = centerY + Math.sin(angle) * radius;
     angle += vr;
-### 高级坐标旋转
+### [高级坐标旋转](https://github.com/zhouxudong/canvastest/blob/master/ui_collision/04-rotate.html)
     ```html
     //只需要知道相对于中心点物体的x,y坐标和旋转角度（rotation),就能计算出旋转后的x1,y1位置
     x1 = x * cos(rotation) - y * sin(rotation);
