@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>segment 节段</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/segment.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        segment0 = new Segment(100, 20),
+        segment1 = new Segment(200, 10),
+        segment2 = new Segment(80, 40);
+
+    segment0.x = 100;
+    segment0.y = 50;
+    segment0.draw(cxt);
+
+    segment1.x = 100;
+    segment1.y = 100;
+    segment1.draw(cxt);
+
+    segment2.x = 100;
+    segment2.y = 150;
+    segment2.draw(cxt);
+
+
+</script>
+</body>
+</html>
