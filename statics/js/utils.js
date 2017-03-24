@@ -77,7 +77,7 @@ var utils = {
         if(a === 1){
             return "rgb("+ r + "," + g + "," + b + ")";
         }else{
-            return "rgb("+ r + "," + g + "," + b + "," + a +")";
+            return "rgba("+ r + "," + g + "," + b + "," + a +")";
         }
     },
     parseColor: function (color, toNumber) {
