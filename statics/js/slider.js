@@ -57,7 +57,6 @@ Slider.prototype.captureMouse = function (element) {
 
     element.addEventListener("mousedown", function () {
         if(utils.containsPoint(bounds, mouse.x, mouse.y)){
-            console.log(1);
             element.addEventListener("mouseup", onMouseUp, false);
             element.addEventListener("mousemove", onMouseMove, false);
         }
