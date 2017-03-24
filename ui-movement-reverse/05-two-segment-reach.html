@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>伸出多个节段</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/segment.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        segment0 = new Segment(100, 20),
+        segment1 = new Segment(100, 20);
+
+    segment1.x = canv.width / 2;
+    segment1.y = canv.height / 2;
+
+    function reach(segment, xpos, ypos) {
+        var dx = xpos - segment.x,
+            dy = ypos - segment.y;
+
+        segment.rotation = Math.atan2(dy, dx);
+
+        var w = segment.getPin().x - segment.x,
+            h = segment.getPin().y - segment.y;
+        return {
+            x: xpos - w,
+            y: ypos - h
+        }
+    }
+    function position(segmentA, segmentB) {
+        segmentA.x = segmentB.getPin().x;
+        segmentA.y = segmentB.getPin().y;
+    }
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        var target = reach(segment0, mouse.x, mouse.y);
+        reach(segment1, target.x, target.y);
+        position(segment0, segment1);
+
+        segment0.draw(cxt);
+        segment1.draw(cxt);
+    }())
+
+
+
+</script>
+</body>
+</html>
