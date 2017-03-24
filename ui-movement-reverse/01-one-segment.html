@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>伸出单个节段</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/segment.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        segment0 = new Segment(100, 20);
+
+    segment0.x = canv.width / 2;
+    segment0.y = canv.height / 2;
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        var dy = mouse.y - segment0.y,
+            dx = mouse.x - segment0.x;
+        segment0.rotation = Math.atan2(dy, dx);
+        segment0.draw(cxt);
+    }())
+
+
+
+</script>
+</body>
+</html>
