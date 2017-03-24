@@ -245,6 +245,10 @@
         partB.vx -= ax / partB.mass;
         partB.vy -= ay / partB.mass;
     }
+## [正向运动学：让物体行走](https://github.com/zhouxudong/canvastest/blob/master/ui-movement-segment/06-walking-real.html)
+    通常，一个运动学系统有两个端点：基础端和自由端。由关节组成的手臂通常一端固定，另一端可以随意伸出去拿一个东西。
+    正向运动学的动作起源于固定端，移动向自由端。例如：行走时，四肢的运动，大腿带动小腿，小腿带动脚
+    反向运动学刚好相反，动作开始于，或者决定于自由端，移动向固定端
 
 
 
