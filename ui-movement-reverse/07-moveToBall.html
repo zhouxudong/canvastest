@@ -23,7 +23,7 @@
         mouse = utils.captureMouse(canv),
         ball = new Ball(20),
         segments = [],
-        numSegments = 15,
+        numSegments = 10,
         bounce = -1,
         gravity = 0.2,
         target;
@@ -84,7 +84,16 @@
             ball.vy *= bounce;
         }
     }
-
+    function checkHit() {
+        var segment = segments[0],
+            dx = segment.getPin().x - ball.x,
+            dy = segment.getPin().y - ball.y,
+            dist = Math.sqrt(dx * dx + dy * dy);
+        if(dist < ball.radius){
+            ball.vx += Math.random() * 2 - 1;
+            ball.vy -= 1;
+        }
+    }
     function draw(segment) {
         segment.draw(cxt);
     }
@@ -95,6 +104,7 @@
         moveBall();
         target = reach(segments[0], ball.x, ball.y);
         segments.forEach(move);
+        checkHit();
         segments.forEach(draw);
         ball.draw(cxt);
     }())
