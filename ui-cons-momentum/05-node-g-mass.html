@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>过界回到初始位置</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#000000;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        springAmount = 0.0005,
+        particles = [],
+        numParticles = 30,
+        minDist = 100;
+
+    for(var size, particle, i = 0; i < numParticles; i++){
+        size = Math.random() * 10 + 2;
+        particle = new Ball(size, "#ffffff");
+        particle.mass = size;
+        particle.x = Math.random() * canv.width;
+        particle.y = Math.random() * canv.height;
+        particle.vx = Math.random() * 6 - 3;
+        particle.vy = Math.random() * 6 - 3;
+        particles.push(particle);
+    }
+    function spring(partA, partB) {
+        var dx = partB.x - partA.x,
+            dy = partB.y - partA.y,
+            dist = Math.sqrt(dx * dx + dy * dy);
+        if(dist < minDist){
+            var alpha = 1 - dist / minDist,
+                color = utils.colorToRGB("#ffffff", alpha);
+            cxt.strokeStyle = color;
+            cxt.beginPath();
+            cxt.moveTo(partA.x,partA.y);
+            cxt.lineTo(partB.x,partB.y);
+            cxt.stroke();
+            var ax = dx * springAmount,
+                ay = dy * springAmount;
+            partA.vx += ax / partA.mass;
+            partA.vy += ay / partA.mass;
+            partB.vx -= ax / partB.mass;
+            partB.vy -= ay / partB.mass;
+        }
+    }
+
+    function move(partA, i) {
+        partA.x += partA.vx;
+        partA.y += partA.vy;
+
+        if(partA.x > canv.width){
+            partA.x = 0;
+        }else if(partA.x < 0){
+            partA.x = canv.width;
+        }
+        if(partA.y > canv.height){
+            partA.y = 0;
+        }else if(partA.y < 0){
+            partA.y = canv.height;
+        }
+        for(var partB, j = i + 1; j < numParticles; j++){
+            partB = particles[j];
+            spring(partA, partB);
+        }
+    }
+    function draw(particle) {
+        particle.draw(cxt);
+    }
+
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        particles.forEach(move);
+        particles.forEach(draw);
+
+    }())
+
+</script>
+</body>
+</html>
