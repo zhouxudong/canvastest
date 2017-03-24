@@ -222,6 +222,29 @@
     force = G * m1 * m2 / (distance * distance);
     //万有引力常量,G = 6.674 * 10^-11，不用，可以去掉常量
     F = m1 * m2 / distance^2
+    //引力公式 javascript 实现
+    function gravitate(partA, partB){
+        var dx = partB.x - partA.x,
+            dy = partB.y - partB.y,
+            distSQ = dx * dx + dy * dy,
+            dist = Math.sqrt(distSQ),
+
+            //引用万有引力公式，去掉常量G
+            force = partA * partB / distSQ,
+
+            //angle = Math.atan2(dy, dx);
+            //ax = force * cos(angle);
+            //ay = force * sin(angle);
+            //同下面获取 ax,ay一样，免去计算angle
+            ax = force * dx / dist,
+            ay = force * dy / dist;
+
+        //force 是A,B共同的力， 质量跟所获得的加速度成反比
+        partA.vx += ax / partA.mass;
+        partA.vy += ay / partA.mass;
+        partB.vx -= ax / partB.mass;
+        partB.vy -= ay / partB.mass;
+    }
 
 
 
