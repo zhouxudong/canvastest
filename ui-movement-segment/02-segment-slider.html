@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>segment 节段 - slider</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/segment.js"></script>
+<script src="../statics/js/slider.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        segment = new Segment(100, 20),
+        slider = new Slider(-90, 90, 0);
+
+    segment.x = 100;
+    segment.y = 100;
+
+    slider.x = 300;
+    slider.y = 20;
+    slider.captureMouse(canv);
+    slider.onchange = drawFram;
+
+    function drawFram() {
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        segment.rotation = slider.value * Math.PI / 180;
+        segment.draw(cxt);
+        slider.draw(cxt);
+    }
+    drawFram();
+
+
+</script>
+</body>
+</html>

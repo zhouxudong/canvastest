@@ -57,6 +57,7 @@ Slider.prototype.captureMouse = function (element) {
 
     element.addEventListener("mousedown", function () {
         if(utils.containsPoint(bounds, mouse.x, mouse.y)){
+            console.log(1);
             element.addEventListener("mouseup", onMouseUp, false);
             element.addEventListener("mousemove", onMouseMove, false);
         }
@@ -71,7 +72,7 @@ Slider.prototype.captureMouse = function (element) {
     function onMouseMove() {
         var pos_y = mouse.y - self.y;
         self.handleY = Math.min(self.height - self.handleHeight, Math.max(pos_y, 0));
-        self.updatePosition();
+        self.updateValue();
     }
     function setHandleBounds() {
         bounds.x = self.x;
