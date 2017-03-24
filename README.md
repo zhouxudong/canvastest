@@ -230,7 +230,7 @@
             dist = Math.sqrt(distSQ),
 
             //引用万有引力公式，去掉常量G
-            force = partA * partB / distSQ,
+            force = partA.mass * partB.mass / distSQ,
 
             //angle = Math.atan2(dy, dx);
             //ax = force * cos(angle);
