@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>segment 节段 - 自动化-行走-控制速度、角度</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/segment.js"></script>
+<script src="../statics/js/slider.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        segment0 = new Segment(100, 30),
+        segment1 = new Segment(100, 20),
+        segment2 = new Segment(100, 30),
+        segment3 = new Segment(100, 20),
+        speedSlider = new Slider(0, 0.2, 0.08),//控制系统整体速度
+        thighRangeSlider = new Slider(0, 90, 45),//控制大腿的前后运动范围
+        thighBaseSlider = new Slider(0, 180, 90),//控制大腿的基础角度
+        calfRangeSlider = new Slider(0, 90, 45),//控制小腿的前后运动范围
+        calfOffsetSlider = new Slider(-3.14, 3.14, -1.57),//控制小腿偏移量
+        cycle = 0,
+        offset = -1.3;
+
+    segment0.x = 200;
+    segment0.y = 200;
+
+    segment1.x = segment0.getPin().x;
+    segment1.y = segment0.getPin().y;
+
+    segment2.x = 200;
+    segment2.y = 200;
+
+    segment3.x = segment2.getPin().x;
+    segment3.y = segment2.getPin().y;
+
+    speedSlider.x = 10;
+    speedSlider.y = 10;
+    speedSlider.captureMouse(canv);
+
+    thighRangeSlider.x = 30;
+    thighRangeSlider.y = 10;
+    thighRangeSlider.captureMouse(canv);
+
+    thighBaseSlider.x = 50;
+    thighBaseSlider.y = 10;
+    thighBaseSlider.captureMouse(canv);
+
+    calfRangeSlider.x = 70;
+    calfRangeSlider.y = 10;
+    calfRangeSlider.captureMouse(canv);
+
+    calfOffsetSlider.x = 90;
+    calfOffsetSlider.y = 10;
+    calfOffsetSlider.captureMouse(canv);
+
+    function walk(segA, segB, cyc) {
+        var angle0 = (Math.sin(cyc) * thighRangeSlider.value + thighBaseSlider.value) * Math.PI / 180,
+            angle1 = (Math.sin(cyc + calfOffsetSlider.value) * calfRangeSlider.value + calfRangeSlider.value) * Math.PI / 180;
+        segA.rotation = angle0;
+        segB.rotation = segA.rotation + angle1;
+        segB.x = segA.getPin().x;
+        segB.y = segA.getPin().y;
+    }
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        cycle += speedSlider.value;
+        walk(segment0, segment1, cycle);
+        walk(segment2, segment3, cycle + Math.PI);
+
+        segment0.draw(cxt);
+        segment1.draw(cxt);
+        segment2.draw(cxt);
+        segment3.draw(cxt);
+
+        speedSlider.draw(cxt);
+        thighRangeSlider.draw(cxt);
+        thighBaseSlider.draw(cxt);
+        calfRangeSlider.draw(cxt);
+        calfOffsetSlider.draw(cxt);
+    }())
+
+
+</script>
+</body>
+</html>
