@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>拖拽多个节段</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/segment.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        segments = [],
+        numSegments = 10;
+
+    while (numSegments--){
+        segments.push(new Segment(50, 10));
+    }
+
+    function move(segment, i) {
+        if(i !== 0){
+            drag(segment, segments[i-1].x, segments[i-1].y);
+        }
+    }
+    function drag(segment, xpos, ypos) {
+        var dx = xpos - segment.x,
+            dy = ypos - segment.y;
+
+        segment.rotation = Math.atan2(dy, dx);
+
+        var w = segment.getPin().x - segment.x,
+            h = segment.getPin().y - segment.y;
+
+        segment.x = xpos - w;
+        segment.y = ypos - h;
+    }
+    function draw(segment) {
+        segment.draw(cxt);
+    }
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        drag(segments[0], mouse.x, mouse.y);
+        segments.forEach(move);
+
+        segments.forEach(draw);
+    }())
+
+
+
+</script>
+</body>
+</html>
