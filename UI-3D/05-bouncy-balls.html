@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3维上 加 重力</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#000000;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball3D.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        balls = [],
+        numBalls = 100,
+        friction = 0.98,
+        f1 = 250,
+        //消失点 vpX,vpY
+        vpX = canv.width / 2,
+        vpY = canv.height / 2,
+        gravity = 0.2,
+        floor = 200,
+        bounce = -0.6;
+
+    for(var ball, i = 0; i < numBalls; i++){
+        ball = new Ball3D(3, Math.random() * 0xffffff);
+        ball.ypos = -100;
+        ball.vx = Math.random() * 6 - 3;
+        ball.vy = Math.random() * 6 - 3;
+        ball.vz = Math.random() * 6 - 3;
+        balls.push(ball);
+    }
+    function move(ball) {
+        ball.vy += gravity;
+        ball.xpos += ball.vx;
+        ball.ypos += ball.vy;
+        ball.zpos += ball.vz;
+
+        //碰撞检测
+        if(ball.ypos > floor){
+            ball.ypos = floor;
+            ball.vy *= bounce;
+        }
+
+        if(ball.zpos > -f1){ //视距在眼前
+            var scale = f1 / (f1 + ball.zpos);
+            ball.scaleX = ball.scaleY = scale;
+            ball.x = vpX + ball.xpos * scale;
+            ball.y = vpY + ball.ypos * scale;
+            ball.visible = true;
+        }else{  //视距在眼后
+            ball.visible = false;
+        }
+    }
+    function zSort(a, b) {
+        return (b.zpos - a.zpos);
+    }
+    function draw(ball) {
+        if(ball.visible){
+            ball.draw(cxt);
+        }
+    }
+
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        balls.forEach(move);
+        balls.sort(zSort);
+        balls.forEach(draw);
+    }())
+
+
+
+</script>
+</body>
+</html>
