@@ -66,7 +66,7 @@
 
         if(zpos + ball.radius > back){
             zpos = back - ball.radius;
-            vy *= -1;
+            vz *= -1;
         }else if(zpos - ball.radius < front){
             zpos = front + ball.radius;
             vz *= -1;
