@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3维上的Z轴 重置--无限树</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#000000;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/tree.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        trees = [],
+        numTrees = 100,
+        f1 = 250,
+        //消失点 vpX,vpY
+        vpX = canv.width / 2,
+        vpY = canv.height / 2,
+        floor = 200,
+        ax = 0,
+        ay = 0,
+        az = 0,
+        vx = 0,
+        vy = 0,
+        vz = 0,
+        gravity = 0.3,
+        friction = 0.98;
+
+
+    for(var tree, i = 0; i < numTrees; i++){
+        tree = new Tree();
+        tree.xpos = Math.random() * 2000 - 1000;
+        tree.ypos = floor;
+        tree.zpos = Math.random() * 10000;
+        trees.push(tree);
+    }
+
+    window.addEventListener("keydown", function (event) {
+        switch (event.keyCode){
+
+            case 38://up
+                az = -1;
+                break;
+            case 40: //dowm
+                az = 1;
+                break;
+            case 37: //left
+                ax = 1;
+                break;
+            case  39: //right
+                ax = -1;
+                break;
+            case 32: //space
+                ay = 1;
+                break;
+        }
+    },false);
+
+    window.addEventListener("keyup", function (event) {
+        switch (event.keyCode){
+            case 38:    //up
+            case 40:    //down
+                az = 0;
+                break;
+            case 37:    //left
+            case 39:    //right
+                ax = 0;
+                break;
+            case 32:    //space
+                ay = 0;
+                break;
+        }
+    },false);
+
+    function move(tree) {
+        tree.xpos += vx;
+        tree.ypos += vy;
+        tree.zpos += vz;
+
+        if(tree.ypos < floor){
+            tree.ypos = floor;
+        }
+
+        if(tree.zpos < -f1){
+            tree.zpos += 10000;
+        }
+        if(tree.zpos > 10000 - f1){
+            tree.zpos -= 10000;
+        }
+        var scale = f1 / (f1 + tree.zpos);
+        tree.scaleX = tree.scaleY = scale;
+        tree.x = vpX + tree.xpos * scale;
+        tree.y = vpY + tree.ypos * scale;
+        tree.alpha = scale;
+
+    }
+    function zSort(a, b) {
+        return (b.zpos - a.zpos);
+    }
+    function draw(tree) {
+        tree.draw(cxt);
+    }
+
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+        vx += ax;
+        vy += ay;
+        vz += az;
+        vy -= gravity;
+
+        trees.forEach(move);
+        vx *= friction;
+        vy *= friction;
+        vz *= friction;
+        trees.sort(zSort);
+        trees.forEach(draw);
+    }())
+
+
+
+</script>
+</body>
+</html>
