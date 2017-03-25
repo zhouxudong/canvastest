@@ -276,7 +276,7 @@
         segment.x = xpos - w;
         segment.y = ypos - h;
     }
-### 伸出 -- [伸向鼠标](https://github.com/zhouxudong/canvastest/blob/master/ui-movement-reverse/06-multi-reach.html)[伸向球](https://github.com/zhouxudong/canvastest/blob/master/ui-movement-reverse/07-moveToBall.html)
+### 伸出 -- [伸向鼠标](https://github.com/zhouxudong/canvastest/blob/master/ui-movement-reverse/06-multi-reach.html) ,  [伸向球](https://github.com/zhouxudong/canvastest/blob/master/ui-movement-reverse/07-moveToBall.html)
 
     //伸出多个节段
     function reach(segment, xpos, ypos){
