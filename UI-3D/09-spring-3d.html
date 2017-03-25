@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3维上弹动 spring 3D</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball3D.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        ball = new Ball3D(),
+        tx = Math.random() * 500 - 250,
+        ty = Math.random() * 500 - 250,
+        tz = Math.random() * 500,
+        spring = 0.1,
+        friction = 0.94,
+        f1 = 250,
+        vpX = canv.width / 2,
+        vpY = canv.height / 2;
+
+    window.addEventListener("mousedown", function () {
+        tx = Math.random() * 500 - 250;
+        ty = Math.random() * 500 - 250;
+        tz = Math.random() * 500;
+    },false);
+
+
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        var dx = tx - ball.xpos,
+            dy = ty - ball.ypos,
+            dz = tz - ball.zpos;
+
+        ball.vx += dx * spring;
+        ball.vy += dy * spring;
+        ball.vz += dz * spring;
+
+        ball.xpos += ball.vx;
+        ball.ypos += ball.vy;
+        ball.zpos += ball.vz;
+
+        ball.vx *= friction;
+        ball.vy *= friction;
+        ball.vz *= friction;
+
+        if(ball.zpos > -f1){
+            var scale = f1 / (f1 + ball.zpos);
+            ball.scaleX = ball.scaleY = scale;
+            ball.x = vpX + ball.xpos * scale;
+            ball.y = vpY + ball.ypos * scale;
+            ball.visible = true;
+        }else {
+            ball.visible = false;
+        }
+        if(ball.visible){
+            ball.draw(cxt);
+        }
+    }())
+
+
+
+</script>
+</body>
+</html>
