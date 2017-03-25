@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3维 坐标旋转 </title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball3D.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        balls = [],
+        numBalls = 50,
+        f1 = 250,
+        vpX = canv.width / 2,
+        vpY = canv.height / 2,
+        angleY;
+
+    for(var ball, i = 0; i < numBalls; i++){
+        ball = new Ball3D(15);
+        ball.xpos = Math.random() * 200 - 100;
+        ball.ypos = Math.random() * 200 - 100;
+        ball.zpos = Math.random() * 200 - 100;
+        balls.push(ball);
+    }
+
+    function rotateY(ball, angle) {
+        var cos = Math.cos(angle),
+            sin = Math.sin(angle),
+            x1 = ball.xpos * cos - ball.zpos * sin,
+            z1 = ball.zpos * cos + ball.xpos * sin;
+        ball.xpos = x1;
+        ball.zpos = z1;
+
+        if(ball.zpos > -f1){
+            var scale = f1 / (f1 + ball.zpos);
+            ball.scaleX = ball.scaleY = scale;
+            ball.x = vpX + ball.xpos * scale;
+            ball.y = vpY + ball.ypos * scale;
+            ball.visible = true;
+        }else {
+            ball.visible = false;
+        }
+    }
+    function move(ball) {
+        rotateY(ball, angleY);
+    }
+    function zSort(a, b) {
+        return (b.zpos - a.zpos);
+    }
+    function draw(ball) {
+        if(ball.visible){
+            ball.draw(cxt);
+        }
+    }
+
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        angleY = (mouse.x - vpX) * 0.001;
+
+        balls.forEach(move);
+        balls.sort(zSort);
+        balls.forEach(draw);
+    }())
+
+
+
+</script>
+</body>
+</html>
