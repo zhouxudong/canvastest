@@ -250,6 +250,57 @@
     正向运动学的动作起源于固定端，移动向自由端。例如：行走时，四肢的运动，大腿带动小腿，小腿带动脚
     反向运动学刚好相反，动作开始于，或者决定于自由端，移动向固定端
 
+## 反向运动学
+### [拖拽](https://github.com/zhouxudong/canvastest/blob/master/ui-movement-reverse/04-multi-drag-segment.html)
+    //拖拽单个节段
+    var w = segment0.getPin().x - segment0.x,
+        h = segment0.getPin().y - segment0.y;
+
+    segment0.x = mouse.x - w;
+    segment0.y = mouse.y - h;
+
+    //拖拽多个节段
+    function drag(segment, xpos, ypos){
+        var dx = xpos - segment.x,
+            dy = ypos - segment.y;
+        segment.rotation = Math.atan2(dy, dx);
+
+        var w = segment.getPin().x - segment.x,
+            h = segment.getPin().y - segment.y;
+
+        segment.x = xpos - w;
+        segment.y = ypos - h;
+    }
+### 伸出 -- [伸向鼠标](https://github.com/zhouxudong/canvastest/blob/master/ui-movement-reverse/06-multi-reach.html)
+            [伸向球](https://github.com/zhouxudong/canvastest/blob/master/ui-movement-reverse/07-moveToBall.html)
+
+    //伸出多个节段
+    function reach(segment, xpos, ypos){
+        var dx = xpos - segment.x,
+            dy = ypos - segment.y;
+
+        segment.rotation = Math.atan2(dy, dx);
+
+        var w = segment.getPin().x - segment.x,
+            h = segment.getPin().y - segment.y;
+
+        return {
+            x: xpos - w,
+            y: ypos - h
+        }
+    }
+    //segment0伸向鼠标，segment1伸向segment0
+    var target = reach(segment0, mouse.x, mouse.y);
+    reach(segment1, target.x, target.y);
+
+
+    function position(segmentA, segmentB){
+        segmentA.x = segmentB.getPin().x;
+        segmentA.y = segmentB.getPin().y;
+    }
+    //把segment0 放置在segment1的末端
+    position(segment0, segment1);
+
 
 
 
