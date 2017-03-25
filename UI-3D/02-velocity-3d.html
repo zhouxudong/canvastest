@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>伸出单个节段</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        ball = new Ball(),
+        xpos = 0,
+        ypos = 0,
+        zpos = 0,
+        vx = 0,
+        vy = 0,
+        vz = 0,
+        friction = 0.98,
+        f1 = 250,
+        //消失点 vpX,vpY
+        vpX = canv.width / 2,
+        vpY = canv.height / 2;
+
+    window.addEventListener("keydown", function (event) {
+        switch (event.keyCode){
+            case 38:
+                vy -= 1;
+                break;
+            case 40:
+                vy += 1;
+                break;
+            case 37:
+                vx -= 1;
+                break;
+            case 39:
+                vx += 1;
+            case 16:    //shift
+                vz += 1;
+                break;
+            case 17: //control
+                vz -= 1;
+                break;
+        }
+    },false);
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        xpos += vx;
+        ypos += vy;
+        zpos += vz;
+        vx *= friction;
+        vy *= friction;
+        vz *= friction;
+
+        if(zpos > -f1){ //视距在眼前
+            var scale = f1 / (f1 + zpos);
+            ball.scaleX = ball.scaleY = scale;
+            ball.x = vpX + xpos * scale;
+            ball.y = vpY + ypos * scale;
+            ball.visible = true;
+        }else{  //视距在眼后
+            ball.visible = false;
+        }
+        if(ball.visible){
+            ball.draw(cxt);
+        }
+    }())
+
+
+
+</script>
+</body>
+</html>
