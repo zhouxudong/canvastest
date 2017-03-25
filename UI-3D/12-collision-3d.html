@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3维上的碰撞检测</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball3D.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        balls = [],
+        numBalls = 20,
+        f1 = 250,
+        //消失点 vpX,vpY
+        vpX = canv.width / 2,
+        vpY = canv.height / 2,
+        top = -200,
+        bottom = 200,
+        left = -200,
+        right = 200,
+        front = -200,
+        back = 200;
+
+    for(var ball, i = 0; i < numBalls; i++){
+        ball = new Ball3D(15);
+        ball.xpos = Math.random() * 400 - 200;
+        ball.ypos = Math.random() * 400 - 200;
+        ball.zpos = Math.random() * 400 - 200;
+        ball.vx = Math.random() * 10 - 5;
+        ball.vy = Math.random() * 10 - 5;
+        ball.vz = Math.random() * 10 - 5;
+        balls.push(ball);
+    }
+    function move(ball) {
+        ball.xpos += ball.vx;
+        ball.ypos += ball.vy;
+        ball.zpos += ball.vz;
+
+        //碰撞检测
+        if(ball.xpos + ball.radius > right){
+            ball.xpos = right - ball.radius;
+            ball.vx *= -1;
+        }else if(ball.xpos - ball.radius < left){
+            ball.xpos = left + ball.radius;
+            ball.vx *= -1;
+        }
+        if(ball.ypos + ball.radius > bottom){
+            ball.ypos = bottom - ball.radius;
+            ball.vy *= -1;
+        }else if(ball.ypos - ball.radius < top){
+            ball.ypos = top + ball.radius;
+            ball.vy *= -1;
+        }
+
+        if(ball.zpos + ball.radius > back){
+            ball.zpos = back - ball.radius;
+            ball.vz *= -1;
+        }else if(ball.zpos - ball.radius < front){
+            ball.zpos = front + ball.radius;
+            ball.vz *= -1;
+        }
+
+        if(ball.zpos > -f1){ //视距在眼前
+            var scale = f1 / (f1 + ball.zpos);
+            ball.scaleX = ball.scaleY = scale;
+            ball.x = vpX + ball.xpos * scale;
+            ball.y = vpY + ball.ypos * scale;
+            ball.visible = true;
+        }else{  //视距在眼后
+            ball.visible = false;
+        }
+    }
+    function checkCollision(ballA, i) {
+        for(var ballB, dx, dy, dz, dist, j = i + 1; j < numBalls; j++){
+            ballB = balls[j];
+            dx = ballA.xpos - ballB.xpos;
+            dy = ballA.ypos - ballB.ypos;
+            dz = ballA.zpos - ballB.zpos;
+            dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+            if(dist < ballA.radius + ballB.radius){
+                ballA.color = "#0000ff";
+                ballB.color = "#0000ff";
+            }
+        }
+    }
+    function zSort(a, b) {
+        return (b.zpos - a.zpos);
+    }
+    function draw(ball) {
+        if(ball.visible){
+            ball.draw(cxt);
+        }
+    }
+
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        balls.forEach(move);
+        balls.forEach(checkCollision)
+        balls.sort(zSort);
+        balls.forEach(draw);
+    }())
+
+
+
+</script>
+</body>
+</html>
