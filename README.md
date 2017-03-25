@@ -304,6 +304,15 @@
     }
     //把segment0 放置在segment1的末端
     position(segment0, segment1);
+### 余弦定理
+    a^2 = b^2 + c^2 - 2 * b * c * cosA
+    b^2 = a^2 + c^2 - 2 * a * c * cosB
+    c^2 = a^2 + b^2 - 2 * a * b * cosC
+
+    javascript中的余弦定理
+    var A = Math.acos((b * b + c * c - a * a) / (2 * b * c)),
+        B = Math.acos((a * a + c * c - b * b) / (2 * a * c)),
+        C = Math.acos((a * a + b * b - c * c) / (2 * a * b));
 
 
 
