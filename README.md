@@ -161,22 +161,27 @@
     //物体当前位于x,y处，相对于中心点的角度是angle, 旋转的角度是rotation,旋转后位于x1,y1
     x = radius * cos(angle);
     y = radius * sin(angle);
+
     //旋转后坐标
     x1 = radius * cos(angle + rotation);
     y1 = radius * sin(angle + rotation);
+
     //两角之和的余弦值
     cos(a + b) = cosa * cosb - sina * sinb
     //两角之和的正弦值
     sin(a + b) = sina * cosb + cosa * sinb
+
     //把公式展开
     x1 = radius * cos(angle) * cos(rotation) - radius * sin(angle) * sin(rotation)
     y1 = radius * sin(angle) * cos(rotation) + radius * cos(angle) * sin(rotation)
+
     //把x,y变量带入公式
     radius = x / cos(angle)
     radisu = y / sin(angle)
 
     x1 = x / cos(angle) * cos(angle) * cos(rotation) - y / sin(angle) * sin(angle) * sin(rotation)
     y1 = y / sin(angle) * sin(angle) * cos(rotation) + x / cos(angle) * cos(angle) * sin(rotation)
+    
     //然后推导后得到 只用旋转角度就能计算处x1,y1的位置
     x1 = x * cos(rotation) - y * sin(rotation);
     y1 = y * cos(rotation) + x * sin(rotation);
