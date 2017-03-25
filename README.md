@@ -314,6 +314,34 @@
         B = Math.acos((a * a + c * c - b * b) / (2 * a * c)),
         C = Math.acos((a * a + b * b - c * c) / (2 * a * b));
 
+## 三维基础
+### [基本透视图](https://github.com/zhouxudong/canvastest/blob/master/UI-3D/01-perspective.html)
+    scale = f1 / (f1 + zpos);
+    object.scaleX = object.scaleY = scale;
+    object.alpha = scale;//可选项；
+    object.x = vanishingPointX + xpos * scale;
+    object.y = vanishingPointY + ypos * scale;
+
+### [z排序](https://github.com/zhouxudong/canvastest/blob/master/UI-3D/04-bounce-mulit-3d.html)
+    //3d 根据物体的zpos 大小 排序
+    function zSort(a, b){
+        reutrn a.zpos - b.zpos;
+    }
+    objects.sort(zSort);
+
+### [坐标旋转](https://github.com/zhouxudong/canvastest/blob/master/UI-3D/11-rotate-xy-3d.html)
+    x1 = xpos * cos(angleZ) - ypos * sin(angleZ);
+    y1 = ypos * cos(angleZ) + xpos * sin(angleZ);
+
+    x1 = xpos * cos(angleY) - zpos * sin(angleY);
+    y1 = zpos * cos(angleY) + xpos * sin(angleY);
+
+    x1 = ypos * cos(angleX) - zpos * sin(angleX);
+    y1 = zpos * cos(angleX) + ypos * sin(angleX);
+
+### [三维计算距离](https://github.com/zhouxudong/canvastest/blob/master/UI-3D/12-collision-3d.html)
+    dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
 
 
 
