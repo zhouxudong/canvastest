@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3维上的碰撞</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        ball = new Ball(),
+        xpos = 0,
+        ypos = 0,
+        zpos = 0,
+        vx = Math.random() * 10 - 5,
+        vy = Math.random() * 10 - 5,
+        vz = Math.random() * 10 - 5,
+        friction = 0.98,
+        f1 = 250,
+        //消失点 vpX,vpY
+        vpX = canv.width / 2,
+        vpY = canv.height / 2,
+        top = -100,
+        bottom = 100,
+        left = -100,
+        right = 100,
+        front = -100,
+        back = 100;
+
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        xpos += vx;
+        ypos += vy;
+        zpos += vz;
+
+        //碰撞检测
+        if(xpos + ball.radius > right){
+            xpos = right - ball.radius;
+            vx *= -1;
+        }else if(xpos - ball.radius < left){
+            xpos = left + ball.radius;
+            vx *= -1;
+        }
+        if(ypos + ball.radius > bottom){
+            ypos = bottom - ball.radius;
+            vy *= -1;
+        }else if(ypos - ball.radius < top){
+            ypos = top + ball.radius;
+            vy *= -1;
+        }
+
+        if(zpos + ball.radius > back){
+            zpos = back - ball.radius;
+            vy *= -1;
+        }else if(zpos - ball.radius < front){
+            zpos = front + ball.radius;
+            vz *= -1;
+        }
+
+        if(zpos > -f1){ //视距在眼前
+            var scale = f1 / (f1 + zpos);
+            ball.scaleX = ball.scaleY = scale;
+            ball.x = vpX + xpos * scale;
+            ball.y = vpY + ypos * scale;
+            ball.visible = true;
+        }else{  //视距在眼后
+            ball.visible = false;
+        }
+        if(ball.visible){
+            ball.draw(cxt);
+        }
+    }())
+
+
+
+</script>
+</body>
+</html>
