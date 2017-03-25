@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>拖拽多个节段</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/segment.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        segment0 = new Segment(100, 20),
+        segment1 = new Segment(100, 20);
+
+    segment1.x = canv.width / 2;
+    segment1.y = canv.height / 2;
+
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        var dx = mouse.x - segment1.x,
+            dy = mouse.y - segment1.y,
+
+            //获得segment1到鼠标的距离
+            dist = Math.sqrt(dx * dx, dy * dy),
+
+            //获得三边长度，a,b等于节点的长度，c等于dist或a+b中较小的一个
+            a = 100,
+            b = 100,
+            c = Math.min(dist, a + b),//三角形的一条边小于其余两边之和
+
+            //用余弦定理公式计算 角B 和 角C， 用Math.atan2计算 角D
+            B = Math.acos((b * b - a * a - c * c) / (-2 * a *c)),
+            C = Math.acos((c * c - a * a - b * b) / (-2 * a *b)),
+            D = Math.atan2(dy, dx),
+            //E = D + B + Math.PI + C;
+            E = D - B + Math.PI  - C;
+
+        //segment1的旋转角度是D+B
+        //segment1.rotation = (D + B);
+
+        segment1.rotation = D - B;
+
+        var target = segment1.getPin();
+        segment0.x = target.x;
+        segment0.y = target.y;
+        segment0.rotation = E;
+
+        segment0.draw(cxt);
+        segment1.draw(cxt);
+    }())
+
+
+
+</script>
+</body>
+</html>
