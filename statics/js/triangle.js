@@ -4,7 +4,7 @@ function Triangle(a, b, c, color) {
     this.pointC = c;
     this.color = utils.parseColor(color || "#ff0000");
     this.lineWidth = 1;
-    this.alpha = 1;
+    this.alpha = 0.5;
 }
 Triangle.prototype.draw = function (cxt) {
     cxt.save();
