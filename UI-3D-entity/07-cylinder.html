@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3维 圆柱体</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/point3d.js"></script>
+<script src="../statics/js/triangle.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        points = [],
+        numFaces = 20;
+        triangles = [],
+        f1 = 250,
+        vpX = canv.width / 2,
+        vpY = canv.height / 2,
+        angleX = 0, angleY = 0;
+
+    for(var angle, xpos, ypos, i = 0, idx = 0; i < numFaces; i++){
+        angle = Math.PI * 2 / numFaces * i;
+        xpos = Math.cos(angle) * 200;
+        ypos = Math.sin(angle) * 200;
+        points[idx] = new Point3D(xpos, ypos, -100);
+        points[idx + 1] = new Point3D(xpos, ypos, 100);
+        idx += 2;
+    }
+    points.forEach(function (point) {
+        point.setVanishingPoint(vpX, vpY);
+        point.setCenter(0, 0, 200);
+    })
+    for(i = 0, idx = 0; i < numFaces - 1; i++){
+        triangles[idx] = new Triangle(points[idx], points[idx + 3], points[idx + 1], "#6666cc");
+        triangles[idx + 1] = new Triangle(points[idx], points[idx + 2], points[idx + 3], "#6666cc");
+        idx += 2;
+    }
+    triangles[idx] = new Triangle(points[idx], points[1], points[idx + 1], "#6666cc");
+    triangles[idx + 1] = new Triangle(points[idx], points[0], points[1], "#6666cc");
+
+    function move(point, i) {
+
+        point.rotateX(angleX);
+        point.rotateY(angleY);
+
+    }
+    function draw(triangle) {
+        triangle.draw(cxt);
+    }
+
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        angleX = (mouse.x - vpX) * 0.001;
+        angleY = (mouse.y - vpY) * 0.001;
+
+        points.forEach(move);
+        triangles.forEach(draw);
+    }())
+
+
+
+</script>
+</body>
+</html>
