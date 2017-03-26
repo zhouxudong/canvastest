@@ -16,11 +16,13 @@
 <script src="../statics/js/utils.js"></script>
 <script src="../statics/js/point3d.js"></script>
 <script src="../statics/js/triangle.js"></script>
+<script src="../statics/js/light.js"></script>
 <script>
 
     var canv = document.getElementById("mycanvas"),
         cxt = canv.getContext("2d"),
         mouse = utils.captureMouse(canv),
+        light = new Light(100, 200, 300, 0.5),
         points = [],
         triangles = [],
         f1 = 250,
@@ -53,54 +55,57 @@
     points[20] = new Point3D(50, 0, -50);
     points[21] = new Point3D(-50, 0, -50);
 
-    triangles[0] = new Triangle(points[0], points[1], points[8], '#cc6666');
-    triangles[1] = new Triangle(points[1], points[9], points[8], '#cc6666');
-    triangles[2] = new Triangle(points[1], points[2], points[9], '#cc6666');
-    triangles[3] = new Triangle(points[2], points[4], points[9], '#cc6666');
-    triangles[4] = new Triangle(points[2], points[3], points[4], '#cc6666');
-    triangles[5] = new Triangle(points[4], points[5], points[9], '#cc6666');
-    triangles[6] = new Triangle(points[9], points[5], points[10], '#cc6666');
-    triangles[7] = new Triangle(points[5], points[6], points[7], '#cc6666');
-    triangles[8] = new Triangle(points[5], points[7], points[10], '#cc6666');
-    triangles[9] = new Triangle(points[0], points[10], points[7], '#cc6666');
-    triangles[10] = new Triangle(points[0], points[8], points[10], '#cc6666');
-    triangles[11] = new Triangle(points[11], points[19], points[12], '#cc6666');
-    triangles[12] = new Triangle(points[12], points[19], points[20], '#cc6666');
-    triangles[13] = new Triangle(points[12], points[20], points[13], '#cc6666');
-    triangles[14] = new Triangle(points[13], points[20], points[15], '#cc6666');
-    triangles[15] = new Triangle(points[13], points[15], points[14], '#cc6666');
-    triangles[16] = new Triangle(points[15], points[20], points[16], '#cc6666');
-    triangles[17] = new Triangle(points[20], points[21], points[16], '#cc6666');
-    triangles[18] = new Triangle(points[16], points[18], points[17], '#cc6666');
-    triangles[19] = new Triangle(points[16], points[21], points[18], '#cc6666');
-    triangles[20] = new Triangle(points[11], points[18], points[21], '#cc6666');
-    triangles[21] = new Triangle(points[11], points[21], points[19], '#cc6666');
-    triangles[22] = new Triangle(points[0], points[11], points[1], '#cc6666');
-    triangles[23] = new Triangle(points[11], points[12], points[1], '#cc6666');
-    triangles[24] = new Triangle(points[1], points[12], points[2], '#cc6666');
-    triangles[25] = new Triangle(points[12], points[13], points[2], '#cc6666');
-    triangles[26] = new Triangle(points[3], points[2], points[14], '#cc6666');
-    triangles[27] = new Triangle(points[2], points[13], points[14], '#cc6666');
-    triangles[28] = new Triangle(points[4], points[3], points[15], '#cc6666');
-    triangles[29] = new Triangle(points[3], points[14], points[15], '#cc6666');
-    triangles[30] = new Triangle(points[5], points[4], points[16], '#cc6666');
-    triangles[31] = new Triangle(points[4], points[15], points[16], '#cc6666');
-    triangles[32] = new Triangle(points[6], points[5], points[17], '#cc6666');
-    triangles[33] = new Triangle(points[5], points[16], points[17], '#cc6666');
-    triangles[34] = new Triangle(points[7], points[6], points[18], '#cc6666');
-    triangles[35] = new Triangle(points[6], points[17], points[18], '#cc6666');
-    triangles[36] = new Triangle(points[0], points[7], points[11], '#cc6666');
-    triangles[37] = new Triangle(points[7], points[18], points[11], '#cc6666');
-    triangles[38] = new Triangle(points[8], points[9], points[19], '#cc6666');
-    triangles[39] = new Triangle(points[9], points[20], points[19], '#cc6666');
-    triangles[40] = new Triangle(points[9], points[10], points[20], '#cc6666');
-    triangles[41] = new Triangle(points[10], points[21], points[20], '#cc6666');
-    triangles[42] = new Triangle(points[10], points[8], points[21], '#cc6666');
-    triangles[43] = new Triangle(points[8], points[19], points[21], '#cc6666');
+    triangles[0] = new Triangle(points[0], points[1], points[8], '#cccccc');
+    triangles[1] = new Triangle(points[1], points[9], points[8], '#cccccc');
+    triangles[2] = new Triangle(points[1], points[2], points[9], '#cccccc');
+    triangles[3] = new Triangle(points[2], points[4], points[9], '#cccccc');
+    triangles[4] = new Triangle(points[2], points[3], points[4], '#cccccc');
+    triangles[5] = new Triangle(points[4], points[5], points[9], '#cccccc');
+    triangles[6] = new Triangle(points[9], points[5], points[10], '#cccccc');
+    triangles[7] = new Triangle(points[5], points[6], points[7], '#cccccc');
+    triangles[8] = new Triangle(points[5], points[7], points[10], '#cccccc');
+    triangles[9] = new Triangle(points[0], points[10], points[7], '#cccccc');
+    triangles[10] = new Triangle(points[0], points[8], points[10], '#cccccc');
+    triangles[11] = new Triangle(points[11], points[19], points[12], '#cccccc');
+    triangles[12] = new Triangle(points[12], points[19], points[20], '#cccccc');
+    triangles[13] = new Triangle(points[12], points[20], points[13], '#cccccc');
+    triangles[14] = new Triangle(points[13], points[20], points[15], '#cccccc');
+    triangles[15] = new Triangle(points[13], points[15], points[14], '#cccccc');
+    triangles[16] = new Triangle(points[15], points[20], points[16], '#cccccc');
+    triangles[17] = new Triangle(points[20], points[21], points[16], '#cccccc');
+    triangles[18] = new Triangle(points[16], points[18], points[17], '#cccccc');
+    triangles[19] = new Triangle(points[16], points[21], points[18], '#cccccc');
+    triangles[20] = new Triangle(points[11], points[18], points[21], '#cccccc');
+    triangles[21] = new Triangle(points[11], points[21], points[19], '#cccccc');
+    triangles[22] = new Triangle(points[0], points[11], points[1], '#cccccc');
+    triangles[23] = new Triangle(points[11], points[12], points[1], '#cccccc');
+    triangles[24] = new Triangle(points[1], points[12], points[2], '#cccccc');
+    triangles[25] = new Triangle(points[12], points[13], points[2], '#cccccc');
+    triangles[26] = new Triangle(points[3], points[2], points[14], '#cccccc');
+    triangles[27] = new Triangle(points[2], points[13], points[14], '#cccccc');
+    triangles[28] = new Triangle(points[4], points[3], points[15], '#cccccc');
+    triangles[29] = new Triangle(points[3], points[14], points[15], '#cccccc');
+    triangles[30] = new Triangle(points[5], points[4], points[16], '#cccccc');
+    triangles[31] = new Triangle(points[4], points[15], points[16], '#cccccc');
+    triangles[32] = new Triangle(points[6], points[5], points[17], '#cccccc');
+    triangles[33] = new Triangle(points[5], points[16], points[17], '#cccccc');
+    triangles[34] = new Triangle(points[7], points[6], points[18], '#cccccc');
+    triangles[35] = new Triangle(points[6], points[17], points[18], '#cccccc');
+    triangles[36] = new Triangle(points[0], points[7], points[11], '#cccccc');
+    triangles[37] = new Triangle(points[7], points[18], points[11], '#cccccc');
+    triangles[38] = new Triangle(points[8], points[9], points[19], '#cccccc');
+    triangles[39] = new Triangle(points[9], points[20], points[19], '#cccccc');
+    triangles[40] = new Triangle(points[9], points[10], points[20], '#cccccc');
+    triangles[41] = new Triangle(points[10], points[21], points[20], '#cccccc');
+    triangles[42] = new Triangle(points[10], points[8], points[21], '#cccccc');
+    triangles[43] = new Triangle(points[8], points[19], points[21], '#cccccc');
 
     points.forEach(function (point) {
         point.setVanishingPoint(vpX, vpY);
         point.setCenter(0, 0, 300);
+    })
+    triangles.forEach(function (triangle) {
+        triangle.light = light;
     })
 
     function move(point, i) {
