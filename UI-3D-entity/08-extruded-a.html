@@ -114,6 +114,9 @@
             triangle.draw(cxt);
         }
     }
+    function depth(a, b) {
+        return (b.getDepth() - a.getDepth());
+    }
 
 
     (function drawFram() {
@@ -124,6 +127,7 @@
         angleY = (mouse.y - vpY) * 0.001;
 
         points.forEach(move);
+        triangles.sort(depth);
         triangles.forEach(draw);
     }())
 
