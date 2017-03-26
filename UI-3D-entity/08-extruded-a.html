@@ -110,7 +110,9 @@
 
     }
     function draw(triangle) {
-        triangle.draw(cxt);
+        if(triangle.isBackface()){
+            triangle.draw(cxt);
+        }
     }
 
 
