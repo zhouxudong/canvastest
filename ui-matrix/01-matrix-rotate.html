@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用矩阵 坐标旋转 x,y轴 </title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball3D.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        balls = [],
+        numBalls = 50,
+        f1 = 250,
+        vpX = canv.width / 2,
+        vpY = canv.height / 2,
+        angleY,angleX;
+
+    for(var ball, i = 0; i < numBalls; i++){
+        ball = new Ball3D(15);
+        ball.xpos = Math.random() * 200 - 100;
+        ball.ypos = Math.random() * 200 - 100;
+        ball.zpos = Math.random() * 200 - 100;
+        balls.push(ball);
+    }
+
+    function matrixMultiply(matrixA, matrixB) {
+        var result = [];
+        result[0] = matrixA[0] * matrixB[0][0] +
+                    matrixA[1] * matrixB[1][0] +
+                    matrixA[2] * matrixB[2][0];
+
+        result[1] = matrixA[0] * matrixB[0][1] +
+                    matrixA[1] * matrixB[1][1] +
+                    matrixA[2] * matrixB[2][1];
+
+        result[2] = matrixA[0] * matrixB[0][2] +
+                    matrixA[1] * matrixB[1][2] +
+                    matrixA[2] * matrixB[2][2];
+        return result;
+    }
+    function rotateX(ball, angle) {
+//        var cos = Math.cos(angle),
+//            sin = Math.sin(angle),
+//            y1 = ball.ypos * cos - ball.zpos * sin,
+//            z1 = ball.zpos * cos + ball.ypos * sin;
+//        ball.ypos = y1;
+//        ball.zpos = z1;
+        var position = [ball.xpos, ball.ypos, ball.zpos],
+            sin = Math.sin(angle),
+            cos = Math.cos(angle),
+            xRotMatrix = [];
+        xRotMatrix[0] = [1,    0,   0];
+        xRotMatrix[1] = [0,  cos, sin];
+        xRotMatrix[2] = [0, -sin, cos];
+        var result = matrixMultiply(position, xRotMatrix);
+        ball.xpos = result[0];
+        ball.ypos = result[1];
+        ball.zpos = result[2];
+
+    }
+
+    function rotateY(ball, angle) {
+//        var cos = Math.cos(angle),
+//            sin = Math.sin(angle),
+//            x1 = ball.xpos * cos - ball.zpos * sin,
+//            z1 = ball.zpos * cos + ball.xpos * sin;
+//        ball.xpos = x1;
+//        ball.zpos = z1;
+        var position = [ball.xpos, ball.ypos, ball.zpos],
+            sin = Math.sin(angle),
+            cos = Math.cos(angle),
+            yRotMatrx = [];
+        yRotMatrx[0] = [cos, 0, sin];
+        yRotMatrx[1] = [0, 1, 0];
+        yRotMatrx[2] = [-sin, 0, cos];
+        var result = matrixMultiply(position, yRotMatrx);
+        ball.xpos = result[0];
+        ball.ypos = result[1];
+        ball.zpos = result[2];
+    }
+
+    function setPerspective(ball) {
+        if(ball.zpos > -f1){
+            var scale = f1 / (f1 + ball.zpos);
+            ball.scaleX = ball.scaleY = scale;
+            ball.x = vpX + ball.xpos * scale;
+            ball.y = vpY + ball.ypos * scale;
+            ball.visible = true;
+        }else {
+            ball.visible = false;
+        }
+    }
+
+    function move(ball) {
+        rotateX(ball, angleX);
+        rotateY(ball, angleY);
+        setPerspective(ball);
+    }
+    function zSort(a, b) {
+        return (b.zpos - a.zpos);
+    }
+    function draw(ball) {
+        if(ball.visible){
+            ball.draw(cxt);
+        }
+    }
+
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        angleY = (mouse.x - vpX) * 0.001;
+        angleX = (mouse.y - vpY) * 0.001;
+
+        balls.forEach(move);
+        balls.sort(zSort);
+        balls.forEach(draw);
+    }())
+
+
+
+</script>
+</body>
+</html>
