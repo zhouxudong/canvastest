@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>随机分布 </title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        dots = [],
+        numDots = 300,
+        maxRadius = 100;
+
+    while (numDots--){
+        var radius = Math.sqrt(Math.random()) * maxRadius,
+            angle = Math.random() * (Math.PI * 2),
+            x = canv.width / 2 + Math.cos(angle) * radius,
+            y = canv.height / 2 + Math.sin(angle) * radius;
+        cxt.fillStyle = "#000000";
+        cxt.beginPath();
+        cxt.arc(x, y, 2, 0, Math.PI * 2, true);
+        cxt.closePath();
+        cxt.fill();
+    }
+
+</script>
+</body>
+</html>
