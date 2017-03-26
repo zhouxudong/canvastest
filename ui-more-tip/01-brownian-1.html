@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>布朗运动 </title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/ball.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        dots = [],
+        numDots = 50,
+        friction = 0.95;
+
+    for(var dot, i = 0; i < numDots; i++){
+        dot = new Ball(1, "#000000");
+        dot.x = Math.random() * canv.width;
+        dot.y = Math.random() * canv.height;
+        dot.vx = 0;
+        dot.vy = 0;
+        dots.push(dot);
+    }
+    function draw(dot) {
+        dot.vx += Math.random() * 0.2 - 0.1;
+        dot.vy += Math.random() * 0.2 - 0.1;
+        dot.y += dot.vy;
+        dot.x += dot.vx;
+        dot.vx *= friction;
+        dot.vy *= friction;
+        if(dot.x > canv.width){
+            dot.x = 0;
+        }else if(dot.x < 0){
+            dot.x = canv.width;
+        }
+        if(dot.y > canv.height){
+            dot.y = 0;
+        }else if(dot.y < 0){
+            dot.y = canv.height;
+        }
+        dot.draw(cxt);
+    }
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        dots.forEach(draw);
+    }())
+
+
+
+</script>
+</body>
+</html>
