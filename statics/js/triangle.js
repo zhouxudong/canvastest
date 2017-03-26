@@ -5,6 +5,7 @@ function Triangle(a, b, c, color) {
     this.color = utils.parseColor(color || "#ff0000");
     this.lineWidth = 1;
     this.alpha = 1;
+    this.light = null;
 }
 Triangle.prototype.draw = function (cxt) {
     cxt.save();
