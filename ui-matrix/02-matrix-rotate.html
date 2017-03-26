@@ -33,6 +33,7 @@
 
         cxt.save();
         cxt.fillStyle = "#ff0000";
+        //context.transform.apply(context, [a, b, c, d, dx, dy])
         cxt.transform(cos, sin, -sin, cos, dx, dy);
         cxt.fillRect(-50, -50, 100, 100);
         cxt.restore();
