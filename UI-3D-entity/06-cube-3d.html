@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3维 立方体</title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script src="../statics/js/point3d.js"></script>
+<script src="../statics/js/triangle.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        mouse = utils.captureMouse(canv),
+        points = [],
+        triangles = [],
+        f1 = 250,
+        vpX = canv.width / 2,
+        vpY = canv.height / 2,
+        angleX, angleY;
+
+    //front four corners
+    points[0] = new Point3D(-100, -100, -100);
+    points[1] = new Point3D(100, -100, -100);
+    points[2] = new Point3D(100, 100, -100);
+    points[3] = new Point3D(-100, 100, -100);
+
+    //back four corners
+    points[4] = new Point3D(-100, -100, 100);
+    points[5] = new Point3D(100, -100, 100);
+    points[6] = new Point3D(100, 100, 100);
+    points[7] = new Point3D(-100, 100, 100);
+
+
+    triangles[0] = new Triangle(points[0], points[1], points[2], '#ffcccc');
+    triangles[1] = new Triangle(points[0], points[2], points[3], '#ffcccc');
+
+    triangles[2] = new Triangle(points[0], points[5], points[1], '#ffcccc');
+    triangles[3] = new Triangle(points[0], points[4], points[5], '#ffcccc');
+
+    triangles[4] = new Triangle(points[4], points[6], points[5], '#ffcccc');
+    triangles[5] = new Triangle(points[4], points[7], points[6], '#ffcccc');
+
+    triangles[6] = new Triangle(points[3], points[2], points[6], '#ffcccc');
+    triangles[7] = new Triangle(points[3], points[6], points[7], '#ffcccc');
+
+    triangles[8] = new Triangle(points[1], points[5], points[6], '#ffcccc');
+    triangles[9] = new Triangle(points[1], points[6], points[2], '#ffcccc');
+
+    triangles[10] = new Triangle(points[4], points[0], points[3], '#ffcccc');
+    triangles[11] = new Triangle(points[4], points[3], points[7], '#ffcccc');
+
+    points.forEach(function (point) {
+        point.setVanishingPoint(vpX, vpY);
+        point.setCenter(0, 0, 300);
+    })
+
+    function move(point, i) {
+
+        point.rotateX(angleX);
+        point.rotateY(angleY);
+
+    }
+    function draw(triangle) {
+        triangle.draw(cxt);
+    }
+
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        angleX = (mouse.x - vpX) * 0.001;
+        angleY = (mouse.y - vpY) * 0.001;
+
+        points.forEach(move);
+        triangles.forEach(draw);
+    }())
+
+
+
+</script>
+</body>
+</html>
