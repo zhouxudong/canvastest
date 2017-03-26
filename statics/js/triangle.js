@@ -30,3 +30,8 @@ Triangle.prototype.isBackface = function () {
         bcy = this.pointB.getScreenY() - this.pointC.getScreenY();
     return (cax * bcy > cay * bcx);
 }
+
+//根据三角形 三点在Z轴上最小的点获取其深度
+Triangle.prototype.getDepth = function () {
+    return Math.min(this.pointA.z, this.pointB.z, this.pointC.z);
+}
