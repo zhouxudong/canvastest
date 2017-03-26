@@ -64,12 +64,14 @@
         angleX = (mouse.x - vpX) * 0.001;
         angleY = (mouse.y - vpY) * 0.001;
 
+        cxt.fillStyle = "#ff0000";
         cxt.beginPath();
         cxt.moveTo(points[0].getScreenX(),points[0].getScreenY());
         points.forEach(move);
         points.forEach(draw);
         cxt.closePath();
         cxt.stroke();
+        cxt.fill();
     }())
 
 
