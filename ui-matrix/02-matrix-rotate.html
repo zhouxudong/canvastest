@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用矩阵 坐标旋转 x,y轴 </title>
+    <style>
+        body{background-color: #bbbbbb;}
+        #mycanvas{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="500">浏览器不支持</canvas>
+
+<script src="../statics/js/utils.js"></script>
+<script>
+
+    var canv = document.getElementById("mycanvas"),
+        cxt = canv.getContext("2d"),
+        angle = 0;
+
+    (function drawFram() {
+        window.requestAnimationFrame(drawFram, canv);
+        cxt.clearRect(0, 0, canv.width, canv.height);
+
+        angle += 0.03;
+
+        var cos = Math.cos(angle),
+            sin = Math.sin(angle),
+            dx = canv.width / 2,
+            dy = canv.height / 2;
+
+        cxt.save();
+        cxt.fillStyle = "#ff0000";
+        cxt.transform(cos, sin, -sin, cos, dx, dy);
+        cxt.fillRect(-50, -50, 100, 100);
+        cxt.restore();
+    }())
+
+
+
+</script>
+</body>
+</html>
