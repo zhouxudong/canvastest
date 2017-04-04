@@ -7,36 +7,46 @@
    * 弧度 = 角度 * Math.PI / 180
    * 角度 = 弧度 * 180 ／ Math.PI
 ## 朝鼠标旋转 -- [示例代码](https://github.com/zhouxudong/canvastest/blob/master/testOne/test1.html)
-    dx = mouse.x - object.x;
-    dy = mouse.y - object.y;
-    object.rotation = Math.atan2(dy,dx) * 180 / Math.PI
+```javascript
+dx = mouse.x - object.x;
+dy = mouse.y - object.y;
+object.rotation = Math.atan2(dy,dx) * 180 / Math.PI
+```
 ## 创建波  -- [示例代码](https://github.com/zhouxudong/canvastest/blob/master/testOne/test6.html)
-    (function drawFram(){
-        window.requestAnimationFrame(drawFram, canvas);
+```javascript
+(function drawFram(){
+    window.requestAnimationFrame(drawFram, canvas);
 
-        xposition = centerX + Math.cos(angle) * radius;
-        yposition = centerY + Math.sin(angle) * radius;
-        angle += speed;
-    }())
+    xposition = centerX + Math.cos(angle) * radius;
+    yposition = centerY + Math.sin(angle) * radius;
+    angle += speed;
+}())
+```
 ## 创建圆形
-    (function drawFram(){
-        window.requestAnimationFrame(drawFram, canvas);
+```javascript
+(function drawFram(){
+    window.requestAnimationFrame(drawFram, canvas);
 
-        xposition = centerX + Math.cos(angle) * radius;
-        yposition = centerY + Math.sin(angle) * radius;
-        angle += speed;
-    }())
+    xposition = centerX + Math.cos(angle) * radius;
+    yposition = centerY + Math.sin(angle) * radius;
+    angle += speed;
+}())
+```
 ## 获取两点间距离
-    //points are x1,y1 and x2,y2
-    dx = x2 - x1;
-    dy = y2 - y1;
-    dist = Math.sqrt(dx * dx + dy * dy);
+```javascript
+//points are x1,y1 and x2,y2
+dx = x2 - x1;
+dy = y2 - y1;
+dist = Math.sqrt(dx * dx + dy * dy);
+```
 ## 绘制一条穿越某个点的曲线
-    //xt,yt 是要穿过的点
-    x1 = xt * 2 - (x0 + x2) / 2;
-    y1 = yt * 2 - (y0 + y2) / 2;
-    context.moveTo(x0,y0);
-    context.quadraticCurveTo(x1,y1,x2,y2);
+```javascript
+//xt,yt 是要穿过的点
+x1 = xt * 2 - (x0 + x2) / 2;
+y1 = yt * 2 - (y0 + y2) / 2;
+context.moveTo(x0,y0);
+context.quadraticCurveTo(x1,y1,x2,y2);
+```
 ## 十进制转换十六进制
     decimaValue.toString(16);
 ## 颜色转换
@@ -58,77 +68,93 @@
     vy += ay;
 ## 越界处理和摩擦力
 ### 移除越界物体，从数组中移除  [示例代码](https://github.com/zhouxudong/canvastest/blob/master/testThree/removeBou.html)
-    if(object.x - object.width / 2 > right ||
-    object.x + object.width / 2 < left ||
-    object.y - object.height > bottom ||
-    object.y + object.height / 2 < top){
-        //remove object
-    }
+```javascript
+if(object.x - object.width / 2 > right ||
+object.x + object.width / 2 < left ||
+object.y - object.height > bottom ||
+object.y + object.height / 2 < top){
+    //remove object
+}
+```
 ### 重置越界物体；ex:[喷泉](https://github.com/zhouxudong/canvastest/blob/master/testThree/addBou.html)、瀑布
-    if(object.x - object.width / 2 > right ||
-    object.x + object.width / 2 < left ||
-    object.y - object.height > bottom ||
-    object.y + object.height / 2 < top){
-        //reset object position and velocity
-    }
+```javascript
+if(object.x - object.width / 2 > right ||
+object.x + object.width / 2 < left ||
+object.y - object.height > bottom ||
+object.y + object.height / 2 < top){
+    //reset object position and velocity
+}
+```
 ### 越界物体屏幕环绕； [小飞船游戏](https://github.com/zhouxudong/canvastest/blob/master/testThree/ship.html)
-    if(object.x - object.width / 2 > right){
-        object.x = left - object.width / 2;
-    }else if(object.x + object.width / 2 < left){
-        object.x = right + object.width / 2;
-    }
-    if(object.y - object.height / 2 > bottom){
-        object.y = top - object.width / 2;
-    }else if(object.y + object.height / 2 < top){
-        object.y = bottom + object.height / 2;
-    }
+```javascript
+if(object.x - object.width / 2 > right){
+    object.x = left - object.width / 2;
+}else if(object.x + object.width / 2 < left){
+    object.x = right + object.width / 2;
+}
+if(object.y - object.height / 2 > bottom){
+    object.y = top - object.width / 2;
+}else if(object.y + object.height / 2 < top){
+    object.y = bottom + object.height / 2;
+}
+```
 ### 摩擦力-精确用法  [示例代码](https://github.com/zhouxudong/canvastest/blob/master/testThree/friction.html)
-    speed = Math.sqrt(vx * vx, vy * vy);
-    angle = Math.atan2(vy, vx);
-    if(speed > friction){
-        speed -= friction;
-    }else{
-        speed = 0;
-    }
-    vx = Math.cos(angle) * speed;
-    vy = Math.sin(angle) * speed;
+```javascript
+speed = Math.sqrt(vx * vx, vy * vy);
+angle = Math.atan2(vy, vx);
+if(speed > friction){
+    speed -= friction;
+}else{
+    speed = 0;
+}
+vx = Math.cos(angle) * speed;
+vy = Math.sin(angle) * speed;
+```
 ### 摩擦力-简单、不精确
-    vx *= friction;
-    vy *= friction;
+```javascript
+vx *= friction;
+vy *= friction;
+```
 ## 缓动与弹动  easing && spring
 ### 简单缓动 [示例代码](https://github.com/zhouxudong/canvastest/blob/master/ui-move/04-easing-1.html)
-    var dx = targetX - object.x,
-        dy = targetY - object.y;
-    vx = dx * easing;
-    vy = dy * easing;
-    object.x += vx;
-    object.y += vy;
+```javascript
+var dx = targetX - object.x,
+    dy = targetY - object.y;
+vx = dx * easing;
+vy = dy * easing;
+object.x += vx;
+object.y += vy;
 
-    *精简
-    object.x += (targetX - object.x) * easing;
-    object.y += (targetY - object.y) * easing;
+//精简
+object.x += (targetX - object.x) * easing;
+object.y += (targetY - object.y) * easing;
+```
 ### 简单弹动  [示例代码](https://github.com/zhouxudong/canvastest/blob/master/ui-move/05-spring.html)
-    var ax = (targetX - object.x) * spring,
-        ay = (targetY - object.y) * spring;
-    vx += ax;
-    vy += ay;
-    vx *= friction;
-    vy *= friction;
-    object.x += vx;
-    object.y += vy;
+```javascript
+var ax = (targetX - object.x) * spring,
+    ay = (targetY - object.y) * spring;
+vx += ax;
+vy += ay;
+vx *= friction;
+vy *= friction;
+object.x += vx;
+object.y += vy;
 
-    *精简
-    vx += (targetX - object.x) * spring;
-    vy += (targetY - object.y) * spring;
-    object.x += (vx *= friction);
-    object.y += (vy *= friction);
+//精简
+vx += (targetX - object.x) * spring;
+vy += (targetY - object.y) * spring;
+object.x += (vx *= friction);
+object.y += (vy *= friction);
+```
 ### 有偏移量（有自己长度）的弹动  [示例代码](https://github.com/zhouxudong/canvastest/blob/master/ui-move/05-spring-length.html)
-    var dx = object.x - fixedX, //fixed  like mouse
-        dy = object.y - fixedY,
-        angle = Math.atan2(dy, dx),
-        targetX = fixedX + Math.cos(angle) * springLength,
-        targetY = fixedY + Math.sin(angle) * springLength;
-        //弹动到 targetX, targetY 跟上面一样
+```javascript
+var dx = object.x - fixedX, //fixed  like mouse
+    dy = object.y - fixedY,
+    angle = Math.atan2(dy, dx),
+    targetX = fixedX + Math.cos(angle) * springLength,
+    targetY = fixedY + Math.sin(angle) * springLength;
+    //弹动到 targetX, targetY 跟上面一样
+    ```
 ## 斜面碰撞
 ### 坐标旋转（围绕中心点centerX, centerY 旋转）
     //已知角度和半径
@@ -228,28 +254,30 @@
     //万有引力常量,G = 6.674 * 10^-11，不用，可以去掉常量
     F = m1 * m2 / distance^2
     //引力公式 javascript 实现
-    function gravitate(partA, partB){
-        var dx = partB.x - partA.x,
-            dy = partB.y - partB.y,
-            distSQ = dx * dx + dy * dy,
-            dist = Math.sqrt(distSQ),
+```javascript
+function gravitate(partA, partB){
+    var dx = partB.x - partA.x,
+        dy = partB.y - partB.y,
+        distSQ = dx * dx + dy * dy,
+        dist = Math.sqrt(distSQ),
 
-            //引用万有引力公式，去掉常量G
-            force = partA.mass * partB.mass / distSQ,
+        //引用万有引力公式，去掉常量G
+        force = partA.mass * partB.mass / distSQ,
 
-            //angle = Math.atan2(dy, dx);
-            //ax = force * cos(angle);
-            //ay = force * sin(angle);
-            //同下面获取 ax,ay一样，免去计算angle
-            ax = force * dx / dist,
-            ay = force * dy / dist;
+        //angle = Math.atan2(dy, dx);
+        //ax = force * cos(angle);
+        //ay = force * sin(angle);
+        //同下面获取 ax,ay一样，免去计算angle
+        ax = force * dx / dist,
+        ay = force * dy / dist;
 
-        //force 是A,B共同的力， 质量跟所获得的加速度成反比
-        partA.vx += ax / partA.mass;
-        partA.vy += ay / partA.mass;
-        partB.vx -= ax / partB.mass;
-        partB.vy -= ay / partB.mass;
-    }
+    //force 是A,B共同的力， 质量跟所获得的加速度成反比
+    partA.vx += ax / partA.mass;
+    partA.vy += ay / partA.mass;
+    partB.vx -= ax / partB.mass;
+    partB.vy -= ay / partB.mass;
+}
+```
 ## [正向运动学：让物体行走](https://github.com/zhouxudong/canvastest/blob/master/ui-movement-segment/06-walking-real.html)
     通常，一个运动学系统有两个端点：基础端和自由端。由关节组成的手臂通常一端固定，另一端可以随意伸出去拿一个东西。
     正向运动学的动作起源于固定端，移动向自由端。例如：行走时，四肢的运动，大腿带动小腿，小腿带动脚
@@ -257,53 +285,56 @@
 
 ## 反向运动学
 ### [拖拽](https://github.com/zhouxudong/canvastest/blob/master/ui-movement-reverse/04-multi-drag-segment.html)
-    //拖拽单个节段
-    var w = segment0.getPin().x - segment0.x,
-        h = segment0.getPin().y - segment0.y;
+```javascript
+//拖拽单个节段
+var w = segment0.getPin().x - segment0.x,
+    h = segment0.getPin().y - segment0.y;
 
-    segment0.x = mouse.x - w;
-    segment0.y = mouse.y - h;
+segment0.x = mouse.x - w;
+segment0.y = mouse.y - h;
 
-    //拖拽多个节段
-    function drag(segment, xpos, ypos){
-        var dx = xpos - segment.x,
-            dy = ypos - segment.y;
-        segment.rotation = Math.atan2(dy, dx);
+//拖拽多个节段
+function drag(segment, xpos, ypos){
+    var dx = xpos - segment.x,
+        dy = ypos - segment.y;
+    segment.rotation = Math.atan2(dy, dx);
 
-        var w = segment.getPin().x - segment.x,
-            h = segment.getPin().y - segment.y;
+    var w = segment.getPin().x - segment.x,
+        h = segment.getPin().y - segment.y;
 
-        segment.x = xpos - w;
-        segment.y = ypos - h;
-    }
+    segment.x = xpos - w;
+    segment.y = ypos - h;
+}
+```
 ### 伸出 -- [伸向鼠标](https://github.com/zhouxudong/canvastest/blob/master/ui-movement-reverse/06-multi-reach.html) ,  [伸向球](https://github.com/zhouxudong/canvastest/blob/master/ui-movement-reverse/07-moveToBall.html)
+```javascript
+//伸出多个节段
+function reach(segment, xpos, ypos){
+    var dx = xpos - segment.x,
+        dy = ypos - segment.y;
 
-    //伸出多个节段
-    function reach(segment, xpos, ypos){
-        var dx = xpos - segment.x,
-            dy = ypos - segment.y;
+    segment.rotation = Math.atan2(dy, dx);
 
-        segment.rotation = Math.atan2(dy, dx);
+    var w = segment.getPin().x - segment.x,
+        h = segment.getPin().y - segment.y;
 
-        var w = segment.getPin().x - segment.x,
-            h = segment.getPin().y - segment.y;
-
-        return {
-            x: xpos - w,
-            y: ypos - h
-        }
+    return {
+        x: xpos - w,
+        y: ypos - h
     }
-    //segment0伸向鼠标，segment1伸向segment0
-    var target = reach(segment0, mouse.x, mouse.y);
-    reach(segment1, target.x, target.y);
+}
+//segment0伸向鼠标，segment1伸向segment0
+var target = reach(segment0, mouse.x, mouse.y);
+reach(segment1, target.x, target.y);
 
 
-    function position(segmentA, segmentB){
-        segmentA.x = segmentB.getPin().x;
-        segmentA.y = segmentB.getPin().y;
-    }
-    //把segment0 放置在segment1的末端
-    position(segment0, segment1);
+function position(segmentA, segmentB){
+    segmentA.x = segmentB.getPin().x;
+    segmentA.y = segmentB.getPin().y;
+}
+//把segment0 放置在segment1的末端
+position(segment0, segment1);
+```
 ### 余弦定理
     a^2 = b^2 + c^2 - 2 * b * c * cosA
     b^2 = a^2 + c^2 - 2 * a * c * cosB
@@ -316,31 +347,38 @@
 
 ## 三维基础
 ### [基本透视图](https://github.com/zhouxudong/canvastest/blob/master/UI-3D/01-perspective.html)
-    scale = f1 / (f1 + zpos);
-    object.scaleX = object.scaleY = scale;
-    object.alpha = scale;//可选项；
-    object.x = vanishingPointX + xpos * scale;
-    object.y = vanishingPointY + ypos * scale;
-
+```javascript
+scale = f1 / (f1 + zpos);
+object.scaleX = object.scaleY = scale;
+object.alpha = scale;//可选项；
+object.x = vanishingPointX + xpos * scale;
+object.y = vanishingPointY + ypos * scale;
+```
 ### [z排序](https://github.com/zhouxudong/canvastest/blob/master/UI-3D/04-bounce-mulit-3d.html)
-    //3d 根据物体的zpos 大小 排序
-    function zSort(a, b){
-        reutrn a.zpos - b.zpos;
-    }
-    objects.sort(zSort);
+```javascript
+//3d 根据物体的zpos 大小 排序
+function zSort(a, b){
+    reutrn a.zpos - b.zpos;
+}
+objects.sort(zSort);
+```
 
 ### [坐标旋转](https://github.com/zhouxudong/canvastest/blob/master/UI-3D/11-rotate-xy-3d.html)
-    x1 = xpos * cos(angleZ) - ypos * sin(angleZ);
-    y1 = ypos * cos(angleZ) + xpos * sin(angleZ);
+```javascript
+x1 = xpos * cos(angleZ) - ypos * sin(angleZ);
+y1 = ypos * cos(angleZ) + xpos * sin(angleZ);
 
-    x1 = xpos * cos(angleY) - zpos * sin(angleY);
-    y1 = zpos * cos(angleY) + xpos * sin(angleY);
+x1 = xpos * cos(angleY) - zpos * sin(angleY);
+y1 = zpos * cos(angleY) + xpos * sin(angleY);
 
-    x1 = ypos * cos(angleX) - zpos * sin(angleX);
-    y1 = zpos * cos(angleX) + ypos * sin(angleX);
+x1 = ypos * cos(angleX) - zpos * sin(angleX);
+y1 = zpos * cos(angleX) + ypos * sin(angleX);
+```
 
 ### [三维计算距离](https://github.com/zhouxudong/canvastest/blob/master/UI-3D/12-collision-3d.html)
-    dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+```javascript
+dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+```
 
 
 
