@@ -154,7 +154,7 @@ var dx = object.x - fixedX, //fixed  like mouse
     targetX = fixedX + Math.cos(angle) * springLength,
     targetY = fixedY + Math.sin(angle) * springLength;
     //弹动到 targetX, targetY 跟上面一样
-    ```
+```
 ## 斜面碰撞
 ### 坐标旋转（围绕中心点centerX, centerY 旋转）
     //已知角度和半径
