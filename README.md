@@ -253,7 +253,8 @@ var dx = object.x - fixedX, //fixed  like mouse
     force = G * m1 * m2 / (distance * distance);
     //万有引力常量,G = 6.674 * 10^-11，不用，可以去掉常量
     F = m1 * m2 / distance^2
-    //引力公式 javascript 实现
+
+引力公式 javascript 实现
 ```javascript
 function gravitate(partA, partB){
     var dx = partB.x - partA.x,
